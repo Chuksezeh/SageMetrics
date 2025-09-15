@@ -5,6 +5,7 @@ import './homePage.css'
 import NavBar from "../Layout/Navbar/navBar";
 import newLogo from "../Images/redesignLogo2.jpg"
 import { useNavigate } from "react-router-dom";
+import Footer from "../Layout/Footer/footer";
 const HomePage = () => {
 
     const navigate = useNavigate();
@@ -90,6 +91,8 @@ const HomePage = () => {
             </div>
         </div>
     </div>
+
+    <Footer/>
    
 
 

@@ -1,15 +1,23 @@
 import React from "react";
 import './navBar.css';
 import logo from "../../Images/redesignLogo2.jpg"
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+
+    const navigate = useNavigate();
+
+    const navigateToHome = () => {
+        navigate("/");
+      }
+
   return (
     <>
       <header>
         <div className="containe-main">
           <input type="checkbox" name="check" id="check" />
           <div className="logo-container">
-            <h3 className="logo">
+            <h3 className="logo" style={{color:"white", cursor:"pointer"}} onClick={navigateToHome}>
            Vitel<span>wireless</span>
             </h3>
           </div>
@@ -17,7 +25,7 @@ const NavBar = () => {
           <div className="nav-btn">
             <div className="nav-links">
               <ul>
-                <li className="nav-link" style={{ "--i": ".6s" }}>
+                <li className="nav-link" style={{ "--i": ".6s" }} onClick={navigateToHome}>
                   <a href="#">Home</a>
                 </li>
                 <li className="nav-link" style={{ "--i": ".85s" }}>
