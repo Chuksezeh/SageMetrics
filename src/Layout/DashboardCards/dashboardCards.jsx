@@ -57,11 +57,11 @@ const DashboardCards = () => {
               <i className="fas fa-users cardIcon"></i>
             </div>
             <div className="wrimagecard-topimage_title h-140">
-              <h2 className="h4 text-center">Big Event Staff</h2>
-              <p>Contains the list of staff members for The Big Event.</p>
+              <h2 className="h4 text-center">Ticket</h2>
+              <p>Manage Ticket</p>
             </div>
             <div className="card-action-bar">
-              <a className="float-lg-none link">View Staff</a>
+              <a className="float-lg-none link">Open/edit Ticket</a>
             </div>
           </div>
         </div>
@@ -71,11 +71,11 @@ const DashboardCards = () => {
               <i className="fas fa-desktop cardIcon"></i>
             </div>
             <div className="wrimagecard-topimage_title h-140">
-              <h2 className="h4 text-center">Dashboard</h2>
-              <p>View Event status and communicate with team members.</p>
+              <h2 className="h4 text-center">FAQ’s</h2>
+              <p>Trending FAQ’s  </p>
             </div>
             <div className="card-action-bar">
-              <a className="float-right link">View Dashboard</a>
+              <a className="float-right link">See FAQ’s</a>
             </div>
           </div>
         </div>
@@ -85,11 +85,11 @@ const DashboardCards = () => {
               <i className="far fa-envelope cardIcon"></i>
             </div>
             <div className="wrimagecard-topimage_title h-140">
-              <h2 className="h4 text-center">Email Hub</h2>
-              <p>Edit email templates sent by the application.</p>
+              <h2 className="h4 text-center">Learn-how-to</h2>
+              <p> Topics  </p>
             </div>
             <div className="card-action-bar">
-              <a className="float-right link">View Templates</a>
+              <a className="float-right link">How to</a>
             </div>
           </div>
         </div>
