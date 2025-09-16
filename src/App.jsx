@@ -31,6 +31,9 @@ import NavBar from "./Layout/Navbar/navBar";
 import LearnHowTo from "./Layout/components/Learn_how_to/LearnHowTo";
 import OpenTicket from "./Layout/components/OpenTicket/OpenTicket";
 import MainHome from "./mainHome";
+import FAQDetails from "./Layout/components/FAQ/FAQDetails";
+import Footer from "./Layout/Footer/footer";
+import TicketManagement from "./Layout/components/TicketManagement/TicketManagement";
 
 function App() {
   const handleLogout = () => {
@@ -50,11 +53,15 @@ function App() {
           path="/segametric-inside"
           element={<Dashboard handleLogout={handleLogout} />}
         >
-          <Route path="manage-ticket" element={<OpenTicket />} />
+          <Route path="manage-ticket" element={<TicketManagement />} />
           <Route path="learn-how-to" element={<LearnHowTo />} />
           <Route path="trending-faq" element={<FAQComponent />} />
+          <Route path="faq-details/:id" element={<FAQDetails />} />
+          {/* <Route path="learn-how" element={<LearnHowTo />} /> */}
+
         </Route>
       </Routes>
+      <Footer />
     </Router>
   );
 }

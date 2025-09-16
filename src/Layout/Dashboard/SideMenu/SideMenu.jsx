@@ -1,11 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./SideMenu.css"; // Import the CSS file
+import "./SideMenu.css";
 
 const SideMenu = ({ sidebarOpen, setSidebarOpen, handleLogout }) => {
   const menuItems = [
-    { path: "/segametric-inside", label: "Dashboard" },
-
     {
       path: "/segametric-inside/manage-ticket",
       label: "Manage Ticket",
@@ -33,7 +31,7 @@ const SideMenu = ({ sidebarOpen, setSidebarOpen, handleLogout }) => {
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <h1 className="sidebar-title">Tech Support</h1>
+          <h1 className="sidebar-title">Support Portal</h1>
         </div>
 
         <nav className="sidebar-nav">
@@ -41,21 +39,22 @@ const SideMenu = ({ sidebarOpen, setSidebarOpen, handleLogout }) => {
             <NavLink
               key={item.path}
               to={item.path}
+              style={{ color: "black" }}
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "active" : ""}`
               }
               onClick={() => setSidebarOpen(false)}
             >
-              {/* <span className="sidebar-icon">{item.icon}</span> */}
-              <span>{item.label}</span>
+              <span className="link-text" style={{ color: "black" }}>
+                {item.label}
+              </span>
             </NavLink>
           ))}
         </nav>
 
         <div className="sidebar-footer">
-          <button onClick={handleLogout} className="logout-button">
-            {/* <span className="sidebar-icon">🚪</span> */}
-            <span>Logout</span>
+          <button onClick={handleLogout} className="segametric-logout-button">
+            <span style={{ color: "black" }}>Logout</span>
           </button>
         </div>
       </div>

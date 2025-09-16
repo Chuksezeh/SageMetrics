@@ -47,7 +47,10 @@ const DashboardCards = () => {
               <p>Manage Ticket</p>
             </div>
             <div className="card-action-bar">
-              <Link className="float-lg-none link" to="/tickets">
+              <Link
+                className="float-lg-none link"
+                to="/segametric-inside/manage-ticket"
+              >
                 Open/edit Ticket
               </Link>
             </div>
@@ -87,7 +90,10 @@ const DashboardCards = () => {
               <p> Topics </p>
             </div>
             <div className="card-action-bar">
-              <Link className="float-right link" to="/how-to">
+              <Link
+                className="float-right link"
+                to="/segametric-inside/learn-how-to"
+              >
                 How to
               </Link>
             </div>
