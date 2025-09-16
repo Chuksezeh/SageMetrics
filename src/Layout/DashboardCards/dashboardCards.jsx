@@ -1,52 +1,38 @@
-
-
 import React from "react";
-import './dashboardCards.css';
+import "./dashboardCards.css";
 import NavBar from "../Navbar/navBar";
+import { Link } from "react-router-dom";
 
 const DashboardCards = () => {
   return (
     <div className="container">
-      {/* <h4
-        className="display-4"
-        style={{ fontSize: "2rem" }}
-      >
-        Having an Admin Dashboard that is clean, concise, and unique can make
-        your application personal and effective.
-      </h4>
-
-      <p className="lead">
-        Here are some styles we have done before, but we are always open to new
-        and creative ideas.
-      </p> */}
-
       <div className="row">
         <div className="col-md-4">
-          <a className="datcard my-3" href="/AuburnAnswers/Admin/ManageCategory">
+          <Link className="datcard my-3" to="/manage-categories">
             <span style={{ color: "white" }} className="h4">
               Manage Categories
             </span>
             <p>Click here to go to the manage categories page.</p>
             <div className="go-corner"></div>
-          </a>
+          </Link>
         </div>
         <div className="col-md-4">
-          <a className="datcard my-3" href="/AuburnAnswers/Admin/ManageCategory">
+          <Link className="datcard my-3" to="/reports">
             <span style={{ color: "white" }} className="h4">
               See Reports
             </span>
             <p>View and download reports for all of your data.</p>
             <div className="go-corner"></div>
-          </a>
+          </Link>
         </div>
         <div className="col-md-4">
-          <a className="datcard my-3" href="/AuburnAnswers/Admin/ManageCategory">
+          <Link className="datcard my-3" to="/add-users">
             <span style={{ color: "white" }} className="h4">
               Add Users
             </span>
             <p>Control who sees what.</p>
             <div className="go-corner"></div>
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -61,24 +47,36 @@ const DashboardCards = () => {
               <p>Manage Ticket</p>
             </div>
             <div className="card-action-bar">
-              <a className="float-lg-none link">Open/edit Ticket</a>
+              <Link className="float-lg-none link" to="/tickets">
+                Open/edit Ticket
+              </Link>
             </div>
           </div>
         </div>
+
         <div className="col-md-6 col-lg-4">
           <div className="wrimagecard wrimagecard-topimage">
             <div className="wrimagecard-topimage_header">
               <i className="fas fa-desktop cardIcon"></i>
             </div>
-            <div className="wrimagecard-topimage_title h-140">
+            <Link
+              to="/segametric-inside/trending-faq"
+              className="wrimagecard-topimage_title h-140"
+            >
               <h2 className="h4 text-center">FAQ’s</h2>
-              <p>Trending FAQ’s  </p>
-            </div>
+              <p>Trending FAQ’s </p>
+            </Link>
             <div className="card-action-bar">
-              <a className="float-right link">See FAQ’s</a>
+              <Link
+                className="float-right link"
+                to="/segametric-inside/trending-faq"
+              >
+                See FAQ’s
+              </Link>
             </div>
           </div>
         </div>
+
         <div className="col-md-6 col-lg-4">
           <div className="wrimagecard wrimagecard-topimage">
             <div className="wrimagecard-topimage_header">
@@ -86,99 +84,16 @@ const DashboardCards = () => {
             </div>
             <div className="wrimagecard-topimage_title h-140">
               <h2 className="h4 text-center">Learn-how-to</h2>
-              <p> Topics  </p>
+              <p> Topics </p>
             </div>
             <div className="card-action-bar">
-              <a className="float-right link">How to</a>
+              <Link className="float-right link" to="/how-to">
+                How to
+              </Link>
             </div>
           </div>
         </div>
       </div>
-
-      {/* <div style={{ marginBottom: "3em" }} className="app">
-        <ul className="list" style={{ display: "contents" }}>
-          <li style={{ display: "block" }}>
-            <a
-              href="/DevHome/DevPage/6"
-              target="_blank"
-              className="card tile text-dark"
-            >
-              <div className="card-header topper"></div>
-              <div
-                style={{ display: "flex" }}
-                className="card-body flex-column"
-              >
-                <strong className="display-4 Title">JavaScript</strong>
-                <span className="fab fa-js-square fa-3x mb-auto mt-auto"></span>
-              </div>
-            </a>
-          </li>
-          <li style={{ display: "block" }}>
-            <a
-              href="/DevHome/DevPage/7"
-              target="_blank"
-              className="card tile text-dark"
-            >
-              <div className="card-header topper"></div>
-              <div
-                style={{ display: "flex" }}
-                className="card-body flex-column"
-              >
-                <strong className="display-4 Title">CSS</strong>
-                <span className="fab fa-css3-alt fa-3x mb-auto mt-auto"></span>
-              </div>
-            </a>
-          </li>
-          <li style={{ display: "block" }}>
-            <a
-              href="/DevHome/DevPage/9"
-              target="_blank"
-              className="card tile text-dark"
-            >
-              <div className="card-header topper"></div>
-              <div
-                style={{ display: "flex" }}
-                className="card-body flex-column"
-              >
-                <strong className="display-4 Title">SQL</strong>
-                <span className="fas fa-database mb-auto fa-3x mt-auto"></span>
-              </div>
-            </a>
-          </li>
-          <li style={{ display: "block" }}>
-            <a
-              href="/DevHome/DevPage/11"
-              target="_blank"
-              className="card tile text-dark"
-            >
-              <div className="card-header topper"></div>
-              <div
-                style={{ display: "flex" }}
-                className="card-body flex-column"
-              >
-                <strong className="display-4 Title">Teams</strong>
-                <span className="fas fa-user-friends mb-auto fa-3x mt-auto"></span>
-              </div>
-            </a>
-          </li>
-          <li style={{ display: "block" }}>
-            <a
-              href="/DevHome/DevPage/12"
-              target="_blank"
-              className="card tile text-dark"
-            >
-              <div className="card-header topper"></div>
-              <div
-                style={{ display: "flex" }}
-                className="card-body flex-column"
-              >
-                <strong className="display-4 Title">Jira</strong>
-                <span className="fab fa-jira mb-auto fa-3x mt-auto"></span>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div> */}
     </div>
   );
 };
