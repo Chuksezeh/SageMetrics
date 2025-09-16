@@ -5,11 +5,16 @@ import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
 
+    const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
     const navigate = useNavigate();
 
     const navigateToHome = () => {
         navigate("/");
       }
+ const navigateToDashboard = () => {
+        navigate("/dashboard");
+      }
+
 
   return (
     <>
@@ -29,9 +34,12 @@ const NavBar = () => {
                   <a href="#">Home</a>
                 </li>
                 <li className="nav-link" style={{ "--i": ".85s" }}>
-                  <a href="#">
-                    Menu<i className="fas fa-caret-down"></i>
-                  </a>
+                    {
+                    userdata ? <a onClick={navigateToDashboard} style={{cursor:"pointer", color:"white", fontWeight:"bold"}}>
+                     My Account <i className="fas fa-caret-down"></i>
+                  </a> : <a href="/"><span style={{color:"white", fontWeight:"bold"}}>Login</span></a>
+                    }
+                 
                   {/* <div className="dropdown">
                     <ul>
                       <li className="dropdown-link">
@@ -86,7 +94,7 @@ const NavBar = () => {
                   <a href="#">
                     Services<i className="fas fa-caret-down"></i>
                   </a>
-                  <div className="dropdown">
+                  {/* <div className="dropdown">
                     <ul>
                       <li className="dropdown-link">
                         <a href="#">Link 1</a>
@@ -134,7 +142,7 @@ const NavBar = () => {
                         <a href="#">Link 4</a>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
                 </li>
                 <li className="nav-link" style={{ "--i": "1.35s" }}>
                   <a href="#">About</a>

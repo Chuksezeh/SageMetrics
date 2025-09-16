@@ -31,6 +31,7 @@ import NavBar from "./Layout/Navbar/navBar";
 import LearnHowTo from "./Layout/components/Learn_how_to/LearnHowTo";
 import OpenTicket from "./Layout/components/OpenTicket/OpenTicket";
 import MainHome from "./mainHome";
+import Footer from "./Layout/Footer/footer";
 
 function App() {
   const handleLogout = () => {
@@ -39,6 +40,7 @@ function App() {
   };
 
   return (
+    <>
     <Router>
       <NavBar />
       <Routes>
@@ -56,6 +58,8 @@ function App() {
         </Route>
       </Routes>
     </Router>
+<Footer/>
+     </>
   );
 }
 

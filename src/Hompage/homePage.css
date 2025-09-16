@@ -131,6 +131,14 @@
 [success-notif] .fa-circle-check  {
     display: block ;
 } 
+.error{
+			color: #D8000C;
+			background-color: #FFBABA;
+			background-image: url('img/error.png');
+            padding: 10px;
+            text-align: center;
+            text-transform: capitalize;
+		}
 .show-password {
     position: absolute;
     top: 50%;
@@ -157,6 +165,30 @@ form {
     width: 85%;
     margin: 0 auto;
 }
+
+
+
+.loader {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #FFF;
+    border-bottom-color: #2bbcf1;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+
+
 
 @media screen and (min-width: 768px) {
     .column {

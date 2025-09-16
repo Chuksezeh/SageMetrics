@@ -2,10 +2,10 @@
 // import NavBar from "../Navbar/navBar";
 // import DashboardCards from "../DashboardCards/dashboardCards";
 
-import React from 'react';
-import NavBar from '../Navbar/navBar';
-import DashboardCards from '../DashboardCards/dashboardCards';
-import Footer from '../Footer/footer';
+// import React from 'react';
+// import NavBar from '../Navbar/navBar';
+// import DashboardCards from '../DashboardCards/dashboardCards';
+// import Footer from '../Footer/footer';
 // const Dashboard = () => {
 //   return (
 //     <>
@@ -21,7 +21,7 @@ import Footer from '../Footer/footer';
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import SideMenu from "./SideMenu/SideMenu";
-import Header from "./Header/Header";
+// import Header from "./Header/Header";
 import "./Dashboard.css";
 
 const Dashboard = ({ handleLogout }) => {
