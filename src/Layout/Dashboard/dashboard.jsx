@@ -17,7 +17,7 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import SideMenu from "./SideMenu/SideMenu";
-import Header from "./Header/Header";
+// import Header from "./Header/Header";
 import "./Dashboard.css";
 
 const Dashboard = ({ handleLogout }) => {

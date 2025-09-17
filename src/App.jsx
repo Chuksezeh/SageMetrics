@@ -42,6 +42,7 @@ function App() {
   };
 
   return (
+    <>
     <Router>
       <NavBar />
       <Routes>
@@ -63,6 +64,8 @@ function App() {
       </Routes>
       <Footer />
     </Router>
+<Footer/>
+     </>
   );
 }
 
