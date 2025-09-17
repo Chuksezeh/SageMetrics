@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './FAQComponent.css';
+import { Link } from 'react-router-dom';
 
 const FAQComponent = () => {
   const [activeTopic, setActiveTopic] = useState('All');
@@ -112,13 +113,13 @@ const FAQComponent = () => {
                 <p>{faq.content}</p>
                 {faq.hasMedia && (
                   <div className="media-notice">
-                    <span className="media-icon">🖼️</span>
+                    {/* <span className="media-icon">🖼️</span> */}
                     This article contains helpful graphics and videos
                   </div>
                 )}
-                <button className="read-full-article">
+                <Link to={`/segametric-inside/faq-details/${faq.id}`} className="read-full-article-btn">
                   Read Full Article →
-                </button>
+                </Link>
               </div>
             )}
           </div>
