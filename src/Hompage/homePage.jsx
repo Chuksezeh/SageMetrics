@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input, Nav } from "reactstrap";
 import "./homePage.css";
 import NavBar from "../Layout/Navbar/navBar";
@@ -19,30 +19,47 @@ const HomePage = () => {
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [error, setError] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
+    const [rememberMe, setRememberMe] = useState("");
 
-    // const handleLogin = () => {
-    //     navigate("/dashboard");
-    // };
-
+     const userRememberData = JSON.parse(localStorage.getItem("rememberData" || "{}"));
+  
     console.log("check check....", rememberMe)
 
+    useEffect(() => {
+    if(userRememberData){
+        setRememberMe(true);
+    }else{
+        setRememberMe(false);
+        localStorage.removeItem("rememberData");
+    }
+    }
+    ,[])
+        
+   
     const handleLoginPartner = async (data) => {
         setLoading(true);
+       if(rememberMe === true){
+        localStorage.setItem("rememberData",JSON.stringify(data));
+        } else {
+        localStorage.removeItem("rememberData");
+        }
 
-        try {
+        const payload = {
+            username: data?.username || userRememberData?.username,
+            password: data?.password || userRememberData?.password,
+        };
+
+      try {
             const res = await vitelWirelessSageMetrics.post(
                 "/registrations/partnerSignIn",
-                data
+                payload
             );
 
             console.log("res", res);
 
             if (res.data.success === true) {
-                localStorage.setItem(
-                    "SageData",
-                    JSON.stringify(res.data.userDetails)
-                );
+                localStorage.setItem("SageData",JSON.stringify(res.data?.userDetails));
+               
                 navigate("/dashboard");
             } else {
                 setError(true);
@@ -109,6 +126,7 @@ const HomePage = () => {
                                                         className="default-input  py-1 ps-3 py-lg-2 input-required"
                                                         name="yourEmail"
                                                         id="yourEmail"
+                                                        defaultValue={userRememberData?.username || ""}
 
                                                         {...register('username', {
                                                             required: 'Email address is required',
@@ -141,7 +159,8 @@ const HomePage = () => {
                                                         className="default-input  py-1 ps-3 py-lg-2 input-required"
                                                         name="password"
                                                         id="yourPassword"
-
+                                                        defaultValue={userRememberData?.password || ""}
+                                                        autoComplete="on"
                                                         {...register('password', {
                                                             required: 'Password is required',
                                                             maxLength: {},
@@ -166,10 +185,11 @@ const HomePage = () => {
                                                 </small>
                                                 <small className="pw-error-feedback error-feedback text-danger text-small"></small>
                                             </div>
-                                            <div className="form-check mb-3 p-0 label-margin">
+                                            <div className="form-check mb-3 p-0 label-margin" >
                                                 <input
                                                     type="checkbox"
                                                     name="rememberme"
+                                                    style={{ cursor:"pointer"} }
                                                     id="rememberMe"
                                                     checked={rememberMe}
                                                     onChange={(e) => setRememberMe(e.target.checked)} // ✅ true if checked, false if not
