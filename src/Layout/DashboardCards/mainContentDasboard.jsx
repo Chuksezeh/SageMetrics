@@ -259,19 +259,20 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
           "April",
           "May",
           "June",
-          "July"
+          "July",
+          "August"
         ],
         datasets: [
           {
             label: "2025 Program",
-            data: [12200, 12000, 8000, 18970, 11000, 14500, 9300],
+            data: [12200, 12000, 8000, 18970, 11000, 14500, 9300, 9500],
             backgroundColor: "#4CAF50",
             borderRadius: 10,
             barThickness: 10
           },
           {
             label: "2024 Program",
-            data: [9500, 11500, 7500, 16900, 4500, 11410, 8500],
+            data: [9500, 11500, 7500, 16900, 4500, 11410, 8500, 9000],
             backgroundColor: "#A5D6A7",
             borderRadius: 10,
             barThickness: 10

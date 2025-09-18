@@ -1,23 +1,23 @@
-$primary: #1957bb; // Blue
-$secondary: #6c757d; // Gray
-$light: #f8f9fa; // Light Gray
-$dark: #343a40; // Dark Gray
-$success: #28a745; // Green
-$danger: #dc3545; // Red
-$warning: #ffc107; // Yellow
-$info: #17a2b8; // Blue
-$body-bg: #f4f6f7; // Light Gray
-$text-color: #343a40; // Dark Gray
+$primary: #1957bb; 
+$secondary: #6c757d; 
+$light: #f8f9fa; 
+$dark: #343a40;
+$success: #28a745; 
+$danger: #dc3545; 
+$warning: #ffc107; 
+$info: #17a2b8; 
+$body-bg: #f4f6f7; 
+$text-color: #343a40; 
 
-// Typography
+
 $font-family-sans-serif: "Poppins", sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1.6;
 
-// Spacing
+
 $spacer: 1rem;
 
-// Responsive
+
 $grid-breakpoint-xs: 0;
 $grid-breakpoint-sm: 576px;
 $grid-breakpoint-md: 768px;
@@ -25,23 +25,23 @@ $grid-breakpoint-lg: 992px;
 $grid-breakpoint-xl: 1200px;
 $grid-breakpoint-xxl: 1400px;
 
-body {
-  font-family: $font-family-sans-serif;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
-  color: $text-color;
-  background-color: $body-bg;
-}
+// body {
+//   font-family: $font-family-sans-serif;
+//   font-size: $font-size-base;
+//   line-height: $line-height-base;
+//   color: $text-color;
+//   background-color: $body-bg;
+// }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-bottom: $spacer / 2;
-  font-weight: 500;
-}
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   margin-bottom: $spacer / 2;
+//   font-weight: 500;
+// }
 
 .fs-small {
   font-size: 1.5rem;
@@ -67,31 +67,31 @@ a {
   border-color: darken($primary, 5%);
 }
 
-.form-group {
-  &.field-with-icon {
-    position: relative;
-    &::before {
-      font-family: "Font Awesome 5 Free";
-      font-weight: 600;
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      color: #6c757d;
-      pointer-events: none;
-    }
-    input,
-    select {
-      padding-left: 36px;
-    }
-    &.search {
-      &::before {
-        content: "\f002";
-      }
-    }
-  }
-}
+// .form-group {
+//   &.field-with-icon {
+//     position: relative;
+//     &::before {
+//       font-family: "Font Awesome 5 Free";
+//       font-weight: 600;
+//       position: absolute;
+//       left: 10px;
+//       top: 50%;
+//       transform: translateY(-50%);
+//       font-size: 16px;
+//       color: #6c757d;
+//       pointer-events: none;
+//     }
+//     input,
+//     select {
+//       padding-left: 36px;
+//     }
+//     &.search {
+//       &::before {
+//         content: "\f002";
+//       }
+//     }
+//   }
+// }
 
 .form-control {
   border-radius: 0.25rem;
@@ -108,40 +108,40 @@ a {
   }
 }
 
-.sidebar {
-  background-color: #2c3e50;
-  padding: 1rem;
-  border-right: 1px solid #dee2e6;
-  min-height: 100vh;
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  max-width: 300px;
-  overflow-y: auto;
-  transition: transform 0.3s ease-in-out;
+// .sidebar {
+//   background-color: #2c3e50;
+//   padding: 1rem;
+//   border-right: 1px solid #dee2e6;
+//   min-height: 100vh;
+//   position: absolute;
+//   z-index: 2;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   max-width: 300px;
+//   overflow-y: auto;
+//   transition: transform 0.3s ease-in-out;
 
-  &:before {
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    right: 0;
-    max-width: 250px;
-    transition: transform 0.3s ease-in-out;
-    background-color: #f8f9fa;
-  }
+//   &:before {
+//     position: fixed;
+//     z-index: 1;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     max-width: 250px;
+//     transition: transform 0.3s ease-in-out;
+//     background-color: #f8f9fa;
+//   }
 
 
-  @media (max-width: $grid-breakpoint-md) {
-    transform: translateX(-100%) !important;
-  }
+//   @media (max-width: $grid-breakpoint-md) {
+//     transform: translateX(-100%) !important;
+//   }
   
-    &.show {
-    transform: translateX(0)!important;
-  }
-}
+//     &.show {
+//     transform: translateX(0)!important;
+//   }
+// }
 
 @media (min-width: $grid-breakpoint-md) {
   .toggle-sidebar-btn {
@@ -198,15 +198,15 @@ a {
   }
 }
 
-.main-content {
-  margin-left: 250px;
-  padding: 1rem;
-  transition: margin-left 0.3s ease-in-out;
+// .main-content {
+//   margin-left: 250px;
+//   padding: 1rem;
+//   transition: margin-left 0.3s ease-in-out;
 
-  @media (max-width: $grid-breakpoint-md) {
-    margin-left: 0;
-  }
-}
+//   @media (max-width: $grid-breakpoint-md) {
+//     margin-left: 0;
+//   }
+// }
 
 .toggle-sidebar-btn {
   position: absolute;
