@@ -2,6 +2,7 @@
 .ticket-management {
   max-width: 1200px;
   margin: 0 auto;
+    margin-bottom: 10%;
   padding: 1.5rem;
 }
 
@@ -414,6 +415,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .ticket-management {
+    margin-top: 10%;
     padding: 1rem;
   }
 

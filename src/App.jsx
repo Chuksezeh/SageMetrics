@@ -29,7 +29,7 @@ import Dashboard from "./Layout/Dashboard/dashboard";
 import FAQComponent from "./Layout/components/FAQ/FAQComponent";
 import NavBar from "./Layout/Navbar/navBar";
 import LearnHowTo from "./Layout/components/Learn_how_to/LearnHowTo";
-import OpenTicket from "./Layout/components/OpenTicket/OpenTicket";
+// import OpenTicket from "./Layout/components/OpenTicket/OpenTicket";
 import MainHome from "./mainHome";
 import FAQDetails from "./Layout/components/FAQ/FAQDetails";
 import Footer from "./Layout/Footer/footer";
@@ -65,7 +65,7 @@ function App() {
       </Routes>
       {/* <Footer /> */}
     </Router>
-<Footer/>
+
      </>
   );
 }

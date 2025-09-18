@@ -4,7 +4,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 const Header = ({ setSidebarOpen }) => {
   return (
-    <header className="header">
+    <div className="header-seg">
       <div className="header-content">
         <div className="flex items-center">
           {/* Mobile menu button */}
@@ -46,7 +46,7 @@ const Header = ({ setSidebarOpen }) => {
           </div>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 
