@@ -1,9 +1,11 @@
 /* Header.css */
-.header {
+.header-seg {
   position: fixed;
-  top: 59px;
-  left: 0;
-  right: 0;
+  top: 85px;
+  left: 370px;
+  right: 70px;
+
+
 
   background-color: white;
 
@@ -82,10 +84,10 @@
   }
 }
 
-/* @media screen and (max-width) {
-  .header {
-    top: 75px;
+@media screen and (max-width: 764px) {
+  .header-seg {
+    top: 55px;
     left: 0;
     right: 0;
   }
-} */
+}

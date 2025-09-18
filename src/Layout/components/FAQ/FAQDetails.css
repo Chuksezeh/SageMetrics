@@ -32,6 +32,7 @@
 
 /* Article Header */
 .article-header {
+  background-color: #0369a1;
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
@@ -309,6 +310,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .faq-details-container {
+    margin-top: 10%;
     padding: 1rem;
   }
 

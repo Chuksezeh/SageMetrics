@@ -81,7 +81,7 @@ const FAQDetails = () => {
       </nav> */}
 
       {/* Article Header */}
-      <header className="article-header">
+      <div className="article-header">
         <h1 className="article-title">{faqArticle.title}</h1>
         {/* <div className="article-author">
           <div className="author-avatar">{faqArticle.author.avatar}</div>
@@ -90,7 +90,7 @@ const FAQDetails = () => {
             <span className="author-role">{faqArticle.author.role}</span>
           </div>
         </div> */}
-      </header>
+      </div>
 
       {/* Article Content */}
       <article
