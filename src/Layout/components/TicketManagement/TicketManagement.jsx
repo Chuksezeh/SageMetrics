@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./TicketManagement.css";
+import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
 
 const TicketManagement = () => {
   const [activeTab, setActiveTab] = useState("open");
@@ -9,7 +10,14 @@ const TicketManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  // Sample data
+  const getAllTicket = async () => {
+    await vitelWirelessSageMetrics.get("generals/getTicketMgt").then((res) => {
+      console.log("res", res.data.data);
+    });
+  };
+
+  useEffect(() => {}, []);
+
   const tickets = [
     {
       id: "TKT-001",
@@ -20,7 +28,7 @@ const TicketManagement = () => {
       status: "Open",
       priority: "High",
       created: "2023-10-15 09:30",
-      updated: "2023-10-16 14:15",
+      updated: "2023-10-16 14:15", 
       createdBy: "John Doe",
       updatedBy: "Jane Smith",
       notes: [
