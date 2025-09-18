@@ -27,6 +27,8 @@ import "./Dashboard.css";
 const Dashboard = ({ handleLogout }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+   
+
   return (
     <div className="admin-dashboard">
       {/* Sidebar */}
