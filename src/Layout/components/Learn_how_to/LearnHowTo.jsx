@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./LearnHowTo.css";
+import { useNavigate } from "react-router-dom";
 
 const LearnHowTo = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
   const [currentStep, setCurrentStep] = useState(1); // 1: Category, 2: Topic, 3: Review
+
+
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userdata) {
+        navigate("/");
+    }
+}, [userdata]);
 
   // Sample data
   const categories = [

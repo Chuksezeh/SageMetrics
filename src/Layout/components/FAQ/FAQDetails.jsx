@@ -1,9 +1,18 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "./FAQDetails.css";
 
 const FAQDetails = () => {
   const { id } = useParams();
+
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userdata) {
+        navigate("/");
+    }
+}, [userdata]);
 
   // Sample data - in a real app, this would come from an API
   const faqArticle = {

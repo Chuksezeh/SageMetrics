@@ -1,10 +1,11 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 // import { Chart, registerables } from "chart.js";
 import "./dashboardLayout.scss";
 import Chart from "https://esm.sh/chart.js/auto";
 import { vitelWirelessSageMetrics } from "../../Utilities/axios";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 
 const MainContentDashboard = () => {
@@ -23,8 +24,15 @@ const [partnerDetails, setPartnerDetails] = React.useState(null);
 const [sendData, setSendData] = React.useState(null);     
 
 const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+const navigate = useNavigate();
 
- console.log("User Data:", userdata);
+  useEffect(() => {
+    if (!userdata) {
+        navigate("/");
+    }
+}, [userdata]);
+
+//  console.log("User Data:", userdata);
  
  const handleVerifyPartner = async data => {
         setVerifyLoadingPartner(true);
@@ -36,16 +44,16 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
             .post('/generals/checkPartnerCode', partner)
             .then(res => {
                 console.log('respartner', res);
-                if (res.data.success === true) {
+                // if (res.data.success === true || res.data.message === "Partner Already Registered") {
                     setVerified(true)
                     setCodeMessage(res?.data?.message)
                     setInvalidPartner(false)
                     setPartnerDetails(res?.data?.partnerData)
-                } else {
-                    setVerified(false)
-                    setCodeMessage(res?.data?.message)
-                    setInvalidPartner(true)
-                }
+                // } else {
+                //     setVerified(false)
+                //     setCodeMessage(res?.data?.message)
+                //     setInvalidPartner(true)
+                // }
                 setVerifyLoadingPartner(false);
             })
             .catch(err => {
@@ -57,7 +65,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
     useEffect(() => {       
         handleVerifyPartner();
     }, []);
-
+   
 
 
 //   const leaderboardData = [
@@ -177,36 +185,41 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
   console.log("Partner Locations:", partnerLoc);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(partnerLoc.length / 5);
+  const totalPages = Math.ceil(partnerLoc?.length / 5);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+ const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
 
-    const activeButton = paginationWrapperRef.current.querySelector(
-      `button[data-page="${pageNumber}"]`
-    );
-    const {
-      left,
-      top,
-      width,
-      height,
-      borderRadius
-    } = activeButton.getBoundingClientRect();
-    const {
-      left: paginationLeft,
-      top: paginationTop
-    } = paginationWrapperRef.current.getBoundingClientRect();
+  const activeButton = paginationWrapperRef.current.querySelector(
+    `button[data-page="${pageNumber}"]`
+  );
 
-    morphRef.current.style.width = `${width}px`;
-    morphRef.current.style.height = `${height}px`;
-    morphRef.current.style.transform = `translate(${left - paginationLeft}px, ${
-      top - paginationTop
-    }px)`;
-    morphRef.current.style.borderRadius = borderRadius;
-    morphRef.current.classList.add("visible");
+  if (!activeButton) {
+    console.warn(`No button found for page number: ${pageNumber}`);
+    return; 
+  }
 
-    // setTimeout(() => morphRef.current.classList.add("has-transition"), 10);
-  };
+  const {
+    left,
+    top,
+    width,
+    height,
+    borderRadius
+  } = activeButton.getBoundingClientRect();
+
+  const {
+    left: paginationLeft,
+    top: paginationTop
+  } = paginationWrapperRef?.current?.getBoundingClientRect();
+
+  morphRef.current.style.width = `${width}px`;
+  morphRef.current.style.height = `${height}px`;
+  morphRef.current.style.transform = `translate(${left - paginationLeft}px, ${
+    top - paginationTop
+  }px)`;
+  morphRef.current.style.borderRadius = borderRadius;
+  morphRef.current.classList.add("visible");
+};
 
   const renderPagination = () => {
     const buttons = [];
@@ -311,7 +324,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">Total Number of Tickets</h5>
-                      <p className="card-text display-6 m-0"> 0 </p>
+                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 0 </p>
                     </div>
                   </div>
                 </div>
@@ -319,7 +332,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">Open Tickets</h5>
-                      <p className="card-text display-6 m-0"> 0 </p>
+                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 0 </p>
                     </div>
                   </div>
                 </div>
@@ -327,7 +340,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">FAQ</h5>
-                      <p className="card-text display-6 m-0"> 6 </p>
+                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 6 </p>
                     </div>
                   </div>
                 </div>
@@ -335,7 +348,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">Company Locations</h5>
-                      <p className="card-text display-6 m-0"> {partnerLoc?.length} </p>
+                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {partnerLoc?.length || 0} </p>
                     </div>
                   </div>
                 </div>
@@ -381,8 +394,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
                   </tr>
                 </thead>
                 <tbody>
-                  {partnerLoc
-                    .slice((currentPage - 1) * 5, currentPage * 5)
+                  {partnerLoc?.slice((currentPage - 1) * 5, currentPage * 5)
                     .map((user, i) => (
                       <tr key={i}>
                         <td>{i+1}</td>

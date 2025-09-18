@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './FAQComponent.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FAQComponent = () => {
   const [activeTopic, setActiveTopic] = useState('All');
   const [expandedQuestion, setExpandedQuestion] = useState(null);
+
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+ const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userdata) {
+        navigate("/");
+    }
+}, [userdata]);
 
   // Sample data
   const topics = ['All', 'Account', 'Billing', 'Software', 'Hardware', 'Network'];

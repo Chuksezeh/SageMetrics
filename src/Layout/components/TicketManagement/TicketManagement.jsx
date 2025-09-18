@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./TicketManagement.css";
+import { useNavigate } from "react-router-dom";
 
 const TicketManagement = () => {
   const [activeTab, setActiveTab] = useState("open");
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+
+
+const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userdata) {
+        navigate("/");
+    }
+}, [userdata]);
+
 
   // Sample data
   const tickets = [
