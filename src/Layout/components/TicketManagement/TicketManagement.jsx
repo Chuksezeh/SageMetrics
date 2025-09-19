@@ -76,10 +76,11 @@ const TicketManagement = () => {
 
   // Validation schema for edit form
   const editValidationSchema = Yup.object({
-    comments: Yup.string()
+    description: Yup.string()
       .required("Comments are required")
       .min(10, "Comments must be at least 10 characters")
       .max(500, "Comments cannot exceed 500 characters"),
+    type: Yup.string().required("Issue type is required"),
   });
 
   // Formik hook for create form
@@ -89,6 +90,7 @@ const TicketManagement = () => {
       category: "",
       type: "",
       status: "open",
+      createdBy: "chidi mark",
       description: "",
     },
     validationSchema: createValidationSchema,
@@ -109,14 +111,15 @@ const TicketManagement = () => {
   // Formik hook for edit form
   const editFormik = useFormik({
     initialValues: {
-      comments: "",
+      description: "",
       status: "",
+      updatedBy: "chidi",
     },
     validationSchema: editValidationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("Updating ticket:", selectedTicket, values);
+      console.log("Updating ticket:", values);
       await vitelWirelessSageMetrics
-        .put(`generals/updateTicketMgt/${selectedTicket.ticketId}`)
+        .put(`generals/updateTicketMgt/${selectedTicket.id}`, values)
         .then((res) => {
           console.log("res", res);
           alert("Ticket updated successfully!");
@@ -139,10 +142,10 @@ const TicketManagement = () => {
     setIsCreating(false);
     setIsViewing(false);
     setSelectedTicket(ticket);
-    editFormik.setValues({
-      comments: "",
-      status: ticket.status || "",
-    });
+    // editFormik.setValues({
+    //   comments: "",
+    //   status: ticket.status || "",
+    // });
   };
 
   const handleViewDetails = (ticket) => {
@@ -454,26 +457,28 @@ const TicketManagement = () => {
                   Please enter additional comments
                 </label>
                 <textarea
-                  id="comments"
-                  name="comments"
-                  value={editFormik.values.comments}
+                  id="description"
+                  name="description"
+                  value={editFormik.values.description}
                   onChange={editFormik.handleChange}
                   onBlur={editFormik.handleBlur}
                   rows="4"
                   placeholder="Add your comments here..."
                   className={
-                    editFormik.touched.comments && editFormik.errors.comments
+                    editFormik.touched.description &&
+                    editFormik.errors.description
                       ? "error"
                       : ""
                   }
                 />
-                {editFormik.touched.comments && editFormik.errors.comments && (
-                  <div className="error-message">
-                    {editFormik.errors.comments}
-                  </div>
-                )}
+                {editFormik.touched.description &&
+                  editFormik.errors.description && (
+                    <div className="error-message">
+                      {editFormik.errors.description}
+                    </div>
+                  )}
                 <div className="character-count">
-                  {editFormik.values.comments.length}/500 characters
+                  {editFormik.values.description.length}/500 characters
                 </div>
               </div>
 
@@ -532,7 +537,7 @@ const TicketManagement = () => {
                     {selectedTicket.status}
                   </span>
                 </div>
-                
+
                 <div className="detail-row">
                   <span className="detail-label">Created:</span>
                   <span className="detail-value">
@@ -619,7 +624,7 @@ const TicketManagement = () => {
               </div>
             ) : (
               filteredTickets.map((ticket) => (
-                <div key={ticket.ticketId} className="ticket-card">
+                <div key={ticket.id} className="ticket-card">
                   <div className="ticket-main">
                     <div className="ticket-id">{ticket.id}</div>
                     <div className="ticket-subscriber">{ticket.subscriber}</div>
