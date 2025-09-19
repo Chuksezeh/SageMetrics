@@ -6,6 +6,7 @@ import newLogo from "../Images/redesignLogo2.jpg";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Layout/Footer/footer";
 import { useForm } from "react-hook-form";
+import image1 from "../Images/support-vec.png"
 import "../../src/index.css"
 import { vitelWirelessSageMetrics } from "../Utilities/axios";
 const HomePage = () => {
@@ -99,15 +100,16 @@ const HomePage = () => {
                                     </div>
                                     <div className="content-icon position-relative">
                                         <img
-                                            src="https://cdn.pixabay.com/photo/2016/06/15/16/16/man-1459246_1280.png"
+                                            // src="https://cdn.pixabay.com/photo/2016/06/15/16/16/man-1459246_1280.png"
+                                            src={image1}
                                             alt=""
                                             className="w-100"
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="column d-block inpulControl p-3 d-flex   h-100">
-                                <div className="content">
+                                 </div>
+                                   <div className="column d-block inpulControl p-3 d-flex   h-100">
+                                     <div className="content">
                                     <div className="form-wrapper py-4">
                                         <h2 className="mb-4">Login</h2>
                                         <form action="" onSubmit={handleSubmit((data, event) => {
