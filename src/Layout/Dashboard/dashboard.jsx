@@ -43,7 +43,7 @@ const Dashboard = ({ handleLogout }) => {
         <Header setSidebarOpen={setSidebarOpen} />
 
         {/* Content Area */}
-        <div className="seg-content-area">
+        <div className="content-area">
           <Outlet />
         </div>
       </div>
