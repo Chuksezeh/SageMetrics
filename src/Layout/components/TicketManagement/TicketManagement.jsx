@@ -3,115 +3,35 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./TicketManagement.css";
 import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import "./TicketManagement.css";
 import { useNavigate } from "react-router-dom";
 
 const TicketManagement = () => {
   const [activeTab, setActiveTab] = useState("open");
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [tickets, setTickets] = useState([]);
 
   const getAllTicket = async () => {
     await vitelWirelessSageMetrics.get("generals/getTicketMgt").then((res) => {
       console.log("res", res.data.data);
+      setTickets(res.data.data);
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getAllTicket();
+  }, []);
 
-
-const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
-const navigate = useNavigate();
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!userdata) {
-        navigate("/");
+      navigate("/");
     }
-}, [userdata]);
-
-
-  // Sample data
-  const tickets = [
-    {
-      id: "TKT-001",
-      subscriber: "123-456-7890",
-      category: "Network",
-      type: "No Service",
-      description: "Customer reports no network signal in their area",
-      status: "Open",
-      priority: "High",
-      created: "2023-10-15 09:30",
-      updated: "2023-10-16 14:15", 
-      createdBy: "John Doe",
-      updatedBy: "Jane Smith",
-      notes: [
-        {
-          date: "2023-10-15 09:30",
-          author: "John Doe",
-          text: "Ticket created - customer reports no service since morning",
-        },
-        {
-          date: "2023-10-16 14:15",
-          author: "Jane Smith",
-          text: "Checked network status - outage reported in customer area. ETA for resolution: 2 hours",
-        },
-      ],
-    },
-    {
-      id: "TKT-002",
-      subscriber: "987-654-3210",
-      category: "Billing",
-      type: "Overcharge",
-      description: "Customer disputing last month bill amount",
-      status: "In Progress",
-      priority: "Medium",
-      created: "2023-10-14 11:20",
-      updated: "2023-10-16 10:45",
-      createdBy: "Mike Johnson",
-      updatedBy: "Mike Johnson",
-      notes: [
-        {
-          date: "2023-10-14 11:20",
-          author: "Mike Johnson",
-          text: "Customer states bill is $50 higher than expected",
-        },
-        {
-          date: "2023-10-15 15:30",
-          author: "Mike Johnson",
-          text: "Reviewed bill details - found additional data charges",
-        },
-      ],
-    },
-    {
-      id: "TKT-003",
-      subscriber: "555-123-4567",
-      category: "Device",
-      type: "Hardware Issue",
-      description: "Phone not charging properly",
-      status: "Resolved",
-      priority: "Medium",
-      created: "2023-10-10 13:45",
-      updated: "2023-10-12 16:20",
-      createdBy: "Sarah Wilson",
-      updatedBy: "Sarah Wilson",
-      notes: [
-        {
-          date: "2023-10-10 13:45",
-          author: "Sarah Wilson",
-          text: "Customer reports charging port issues",
-        },
-        {
-          date: "2023-10-12 16:20",
-          author: "Sarah Wilson",
-          text: "Recommended device replacement - customer agreed",
-        },
-      ],
-    },
-  ];
+  }, [userdata]);
 
   const categories = ["Network", "Billing", "Device", "Account", "Service"];
   const issueTypes = {
@@ -168,14 +88,21 @@ const navigate = useNavigate();
       subscriber: "",
       category: "",
       type: "",
+      status: "open",
       description: "",
     },
     validationSchema: createValidationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log("Creating new ticket:", values);
-      alert("New ticket created successfully!");
-      resetForm();
-      setIsCreating(false);
+      vitelWirelessSageMetrics
+        .post("generals/createTicketMgt", values)
+        .then((res) => {
+          console.log("res ==>", res);
+          getAllTicket();
+          alert("New ticket created successfully!");
+          resetForm();
+          setIsCreating(false);
+        });
     },
   });
 
@@ -183,19 +110,26 @@ const navigate = useNavigate();
   const editFormik = useFormik({
     initialValues: {
       comments: "",
+      status: "",
     },
     validationSchema: editValidationSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log("Updating ticket:", selectedTicket.id, values);
-      alert("Ticket updated successfully!");
-      resetForm();
-      setIsEditing(false);
+    onSubmit: async (values, { resetForm }) => {
+      console.log("Updating ticket:", selectedTicket, values);
+      await vitelWirelessSageMetrics
+        .put(`generals/updateTicketMgt/${selectedTicket.ticketId}`)
+        .then((res) => {
+          console.log("res", res);
+          alert("Ticket updated successfully!");
+          resetForm();
+          setIsEditing(false);
+        });
     },
   });
 
   const handleCreateTicket = () => {
     setIsCreating(true);
     setIsEditing(false);
+    setIsViewing(false);
     setSelectedTicket(null);
     createFormik.resetForm();
   };
@@ -203,25 +137,40 @@ const navigate = useNavigate();
   const handleEditTicket = (ticket) => {
     setIsEditing(true);
     setIsCreating(false);
+    setIsViewing(false);
     setSelectedTicket(ticket);
-    editFormik.resetForm();
+    editFormik.setValues({
+      comments: "",
+      status: ticket.status || "",
+    });
+  };
+
+  const handleViewDetails = (ticket) => {
+    setIsViewing(true);
+    setIsCreating(false);
+    setIsEditing(false);
+    setSelectedTicket(ticket);
   };
 
   const handleCloseForm = () => {
     setIsCreating(false);
     setIsEditing(false);
+    setIsViewing(false);
     createFormik.resetForm();
     editFormik.resetForm();
   };
 
+  console.log("ticket", tickets);
+
   const filteredTickets = tickets.filter((ticket) => {
     if (activeTab === "open")
-      return ticket.status === "Open" || ticket.status === "In Progress";
+      return ticket.status === "open" || ticket.status === "In Progress";
     if (activeTab === "resolved") return ticket.status === "Resolved";
     return true;
   });
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
     return (
       date.toLocaleDateString() +
@@ -229,6 +178,12 @@ const navigate = useNavigate();
       date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     );
   };
+
+  const statusArray = [
+    { id: 3, name: "pending", value: "pending" },
+    { id: 4, name: "proccessing", value: "proccessing" },
+    { id: 5, name: "resolved", value: "resolved" },
+  ];
 
   return (
     <div className="ticket-management">
@@ -424,6 +379,30 @@ const navigate = useNavigate();
                     className="disabled-field"
                   />
                 </div>
+
+                <div className="form-group">
+                  <label htmlFor="status">Status</label>
+                  <select
+                    id="status"
+                    name="status"
+                    value={editFormik.values.status}
+                    onChange={editFormik.handleChange}
+                    onBlur={editFormik.handleBlur}
+                    className={
+                      editFormik.touched.status && editFormik.errors.status
+                        ? "error"
+                        : ""
+                    }
+                  >
+                    <option value="">Select status</option>
+                    {statusArray &&
+                      statusArray.map((status, index) => (
+                        <option key={index + 1} value={status.value}>
+                          {status.value}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
 
               <div className="ticket-details">
@@ -437,7 +416,7 @@ const navigate = useNavigate();
                   <div className="detail-item">
                     <span className="detail-label">Updated By:</span>
                     <span className="detail-value">
-                      {selectedTicket.updatedBy}
+                      {selectedTicket.updatedBy || "N/A"}
                     </span>
                   </div>
                   <div className="detail-item">
@@ -450,19 +429,23 @@ const navigate = useNavigate();
 
                 <div className="previous-notes">
                   <h3>Previous Notes:</h3>
-                  {selectedTicket.notes.map((note, index) => (
-                    <div key={index} className="note-item">
-                      <div className="note-header">
-                        <span className="note-date">
-                          {formatDate(note.date)}
-                        </span>
-                        <span className="note-author">
-                          Created by {note.author}
-                        </span>
+                  {selectedTicket?.notes?.length > 0 ? (
+                    selectedTicket.notes.map((note, index) => (
+                      <div key={index} className="note-item">
+                        <div className="note-header">
+                          <span className="note-date">
+                            {formatDate(note.date)}
+                          </span>
+                          <span className="note-author">
+                            Created by {note.author}
+                          </span>
+                        </div>
+                        <p className="note-text">{note.text}</p>
                       </div>
-                      <p className="note-text">{note.text}</p>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p>No notes available</p>
+                  )}
                 </div>
               </div>
 
@@ -508,8 +491,105 @@ const navigate = useNavigate();
         </div>
       )}
 
+      {/* Ticket Details View */}
+      {isViewing && selectedTicket && (
+        <div className="ticket-form-overlay">
+          <div className="ticket-form">
+            <div className="form-header">
+              <h2>Ticket Details</h2>
+              <button className="close-form" onClick={handleCloseForm}>
+                Close
+              </button>
+            </div>
+
+            <div className="ticket-details-view">
+              <div className="details-grid">
+                <div className="detail-row">
+                  <span className="detail-label">Ticket ID:</span>
+                  <span className="detail-value">{selectedTicket.id}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Subscriber Number:</span>
+                  <span className="detail-value">
+                    {selectedTicket.subscriber}
+                  </span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Category:</span>
+                  <span className="detail-value">
+                    {selectedTicket.category}
+                  </span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Type:</span>
+                  <span className="detail-value">{selectedTicket.type}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Status:</span>
+                  <span
+                    className={`detail-value status ${selectedTicket.status?.toLowerCase()}`}
+                  >
+                    {selectedTicket.status}
+                  </span>
+                </div>
+                
+                <div className="detail-row">
+                  <span className="detail-label">Created:</span>
+                  <span className="detail-value">
+                    {formatDate(selectedTicket.created)} by{" "}
+                    {selectedTicket.createdBy || "N/A"}
+                  </span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Last Updated:</span>
+                  <span className="detail-value">
+                    {formatDate(selectedTicket.updated)} by{" "}
+                    {selectedTicket.updatedBy || "N/A"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="description-section">
+                <h3>Description</h3>
+                <div className="description-content">
+                  <p>{selectedTicket.description}</p>
+                </div>
+              </div>
+
+              <div className="notes-section">
+                <h3>Notes & Comments</h3>
+                {selectedTicket?.notes?.length > 0 ? (
+                  selectedTicket.notes.map((note, index) => (
+                    <div key={index} className="note-item">
+                      <div className="note-header">
+                        <span className="note-date">
+                          {formatDate(note.date)}
+                        </span>
+                        <span className="note-author">by {note.author}</span>
+                      </div>
+                      <p className="note-text">{note.text}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="no-notes">No notes available</p>
+                )}
+              </div>
+
+              <div className="view-actions">
+                <button
+                  className="edit-btn"
+                  onClick={() => handleEditTicket(selectedTicket)}
+                >
+                  Edit Ticket
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tickets List */}
-      {!isCreating && !isEditing && (
+      {!isCreating && !isEditing && !isViewing && (
         <>
           <div className="ticket-tabs">
             <button
@@ -539,7 +619,7 @@ const navigate = useNavigate();
               </div>
             ) : (
               filteredTickets.map((ticket) => (
-                <div key={ticket.id} className="ticket-card">
+                <div key={ticket.ticketId} className="ticket-card">
                   <div className="ticket-main">
                     <div className="ticket-id">{ticket.id}</div>
                     <div className="ticket-subscriber">{ticket.subscriber}</div>
@@ -553,7 +633,7 @@ const navigate = useNavigate();
                       {ticket.status}
                     </div>
                     <div
-                      className={`ticket-priority ${ticket.priority.toLowerCase()}`}
+                      className={`ticket-priority ${ticket?.priority?.toLowerCase()}`}
                     >
                       {ticket.priority}
                     </div>
@@ -582,7 +662,10 @@ const navigate = useNavigate();
                       >
                         Edit
                       </button>
-                      <button className="action-btn view-btn">
+                      <button
+                        className="action-btn view-btn"
+                        onClick={() => handleViewDetails(ticket)}
+                      >
                         View Details
                       </button>
                     </div>
