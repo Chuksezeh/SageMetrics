@@ -35,6 +35,7 @@ import FAQDetails from "./Layout/components/FAQ/FAQDetails";
 import Footer from "./Layout/Footer/footer";
 import TicketManagement from "./Layout/components/TicketManagement/TicketManagement";
 import AutoLogout from "./AutoLogout";
+import NotFoundPage from "./Layout/NoFoundPage/noFoundPage";
 
 function App() {
   const handleLogout = () => {
@@ -47,6 +48,7 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
+        <Route path='*' element={<NotFoundPage />} />
         <Route path="/" element={<MainHome />} />
         <Route path="/dashboard" element={<DashboardCards />} />
 
@@ -54,7 +56,7 @@ function App() {
         <Route
           path="/segametric-inside"
           element={<Dashboard handleLogout={handleLogout} /> }>
-           
+          
           <Route path="manage-ticket" element={<AutoLogout> <TicketManagement />  </AutoLogout>} />
           <Route path="learn-how-to" element={  <AutoLogout> <LearnHowTo />  </AutoLogout>} />
           <Route path="trending-faq" element={  <AutoLogout> <FAQComponent /> </AutoLogout>} />

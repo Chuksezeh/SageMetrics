@@ -44,7 +44,7 @@ const NavBar = () => {
                     {
                     userdata ? <a onClick={navigateToDashboard} style={{cursor:"pointer", color:"white", fontWeight:"bold"}}>
                      My Account <i className="fas fa-caret-down"></i>
-                  </a> : <a href="/"><span style={{color:"white", fontWeight:"bold"}}>Login</span></a>
+                  </a> : <a  onClick={navigateToHome}><span style={{color:"white", fontWeight:"bold"}}>Login</span></a>
                     }
                  
                   {/* <div className="dropdown">
@@ -97,12 +97,12 @@ const NavBar = () => {
                     </ul>
                   </div> */}
                 </li>
-                   <li className="nav-link" style={{ "--i": "1.1s" }}>
+                   {/* <li className="nav-link" style={{ "--i": "1.1s" }}>
                   <a href="#">
                     Services <i className="fas fa-caret-down"></i>
                   </a>
                  
-                   </li>
+                   </li> */}
                   {
                     userdata ?  <li className="nav-link" style={{ "--i": "1.35s" }} onClick={handleLogout} >
                    <a href="#">Logout <i style={{marginLeft:"5px"}}><IoIosLogOut /></i></a>
