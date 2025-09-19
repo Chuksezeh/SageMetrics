@@ -28,9 +28,11 @@ const NavBar = () => {
       <header>
         <div className="containe-main">
           <input type="checkbox" name="check" id="check" />
-          <div className="logo-container">
+          <div className="logo-container">  <span><img src={logo} style={{width:"40px", padding:"5px"}}/>  </span> 
             <h3 className="logo" style={{color:"white", cursor:"pointer"}} onClick={navigateToHome}>
-           Vitel<span style={{color:"#3ac1f1"}}>wireless</span>
+                <div > 
+                    <span> Vitel<span style={{color:"#3ac1f1"}}>wireless</span>  </span> </div>
+       
             </h3>
           </div>
 

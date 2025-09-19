@@ -109,7 +109,7 @@ const HomePage = () => {
                                 </div>
                                  </div>
                                    <div className="column d-block inpulControl p-3 d-flex   h-100">
-                                     <div className="content">
+                                     <div className="content-form ">
                                     <div className="form-wrapper py-4">
                                         <h2 className="mb-4">Login</h2>
                                         <form action="" onSubmit={handleSubmit((data, event) => {
