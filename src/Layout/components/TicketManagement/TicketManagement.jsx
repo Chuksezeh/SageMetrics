@@ -12,20 +12,23 @@ const TicketManagement = () => {
   const [isViewing, setIsViewing] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [tickets, setTickets] = useState([]);
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+  const navigate = useNavigate();
 
   const getAllTicket = async () => {
-    await vitelWirelessSageMetrics.get("generals/getTicketMgt").then((res) => {
-      console.log("res", res.data.data);
-      setTickets(res.data.data);
-    });
+    await vitelWirelessSageMetrics
+      .get(`generals/getTicketMgt/${userdata?.partnerId}`)
+      .then((res) => {
+        console.log("res", res.data.data);
+        setTickets(res.data.data);
+      });
   };
 
   useEffect(() => {
     getAllTicket();
   }, []);
 
-  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
-  const navigate = useNavigate();
+  console.log("userdata", userdata);
 
   useEffect(() => {
     if (!userdata) {
@@ -80,7 +83,7 @@ const TicketManagement = () => {
       .required("Comments are required")
       .min(10, "Comments must be at least 10 characters")
       .max(500, "Comments cannot exceed 500 characters"),
-    type: Yup.string().required("Issue type is required"),
+    status: Yup.string().required("Issue type is required"),
   });
 
   // Formik hook for create form
@@ -90,7 +93,8 @@ const TicketManagement = () => {
       category: "",
       type: "",
       status: "open",
-      createdBy: "chidi mark",
+      createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
+      partnerId: userdata?.partnerId,
       description: "",
     },
     validationSchema: createValidationSchema,
@@ -113,7 +117,8 @@ const TicketManagement = () => {
     initialValues: {
       description: "",
       status: "",
-      updatedBy: "chidi",
+      createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
+      partnerId: userdata?.partnerId,
     },
     validationSchema: editValidationSchema,
     onSubmit: async (values, { resetForm }) => {

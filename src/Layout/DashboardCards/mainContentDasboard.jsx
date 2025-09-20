@@ -6,6 +6,7 @@ import Chart from "https://esm.sh/chart.js/auto";
 import { vitelWirelessSageMetrics } from "../../Utilities/axios";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import useFetchData from "../../Utilities/getFunction";
 
 
 const MainContentDashboard = () => {
@@ -240,8 +241,7 @@ const navigate = useNavigate();
       );
     }
 
-    // const locationLength = partnerLoc?.length;
-    
+
 
     return (
       <nav
@@ -306,6 +306,20 @@ const navigate = useNavigate();
     return () => myChart.destroy();
   }, []);
 
+
+const {data: ticketData, isPending, error} = useFetchData(`/generals/getTicketMgt/${userdata?.partnerId}`);
+const openTickets = ticketData?.data?.filter(ticket => ticket.status === "open"); 
+
+const pendingTickets = ticketData?.data?.filter(ticket => ticket.status === "pending");
+const resolvedTickets = ticketData?.data?.filter(ticket => ticket.status === "resolved");
+const totalNumberTicket = ticketData?.data?.length;
+const PendingTicket = pendingTickets?.length;
+const resolveTicket = resolvedTickets?.length;
+    
+console.log("Open Ticket:", ticketData); 
+
+
+
   return (
     <div className="p-0 p-md-3">
       {/* <h1 className="h3 mt-4 mt-md-0 ms-md-0 mb-3">Dashboard</h1> */}
@@ -324,7 +338,11 @@ const navigate = useNavigate();
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">Total Number of Tickets</h5>
-                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 0 </p>
+                      {
+                        isPending ? <p>  <span className="loader"></span></p> : 
+                         <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {totalNumberTicket || 0 } </p>
+                      }
+                     
                     </div>
                   </div>
                 </div>
@@ -332,23 +350,33 @@ const navigate = useNavigate();
                   <div className="card card-stat h-100">
                     <div className="card-body">
                       <h5 className="card-title">Open Tickets</h5>
-                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 0 </p>
+                     {
+                        isPending ? <p>  <span className="loader"></span></p> : 
+                         <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {openTickets?.length || 0 } </p>
+                      }
                     </div>
                   </div>
                 </div>
                 <div className="col">
                   <div className="card card-stat h-100">
                     <div className="card-body">
-                      <h5 className="card-title">FAQ</h5>
-                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> 6 </p>
+                      <h5 className="card-title">Processing Tickets</h5>
+                       {
+                        isPending ? <p>  <span className="loader"></span></p> : 
+                         <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {PendingTicket || 0} </p>
+                      }
+                     
                     </div>
                   </div>
                 </div>
                 <div className="col">
                   <div className="card card-stat h-100">
                     <div className="card-body">
-                      <h5 className="card-title">Company Locations</h5>
-                      <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {partnerLoc?.length || 0} </p>
+                      <h5 className="card-title">Resolved Tickets</h5>
+                       {
+                        isPending ? <p>  <span className="loader"></span></p> : 
+                         <p className="card-text display-6 m-0" style={{fontWeight:"400"}}> {resolveTicket || 0 } </p>
+                      }
                     </div>
                   </div>
                 </div>
@@ -371,7 +399,7 @@ const navigate = useNavigate();
         <div className="col-lg-12">
           <div className="card h-100">
             <div className="card-body">
-              <h5 className="card-title">Partner Locations</h5>
+              <h5 className="card-title">Partner Locations({partnerLoc?.length || 0})</h5>
               <div className="row mb-3">
                 {/* <div className="col-lg-4">
                   <input
