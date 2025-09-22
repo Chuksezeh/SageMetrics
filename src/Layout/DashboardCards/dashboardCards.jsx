@@ -55,7 +55,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
 
 
   return (
-    <div className="container">
+    <div className="dashboard-card-container">
          <h5 className=" mt-1 mt-md-0 ms-md-0 p-1"> <span style={{fontWeight:"bold", color: "black"}}> SageMetrics  </span> Dashboard</h5>
       {/* <div className="row">
         <div className="col-md-4">

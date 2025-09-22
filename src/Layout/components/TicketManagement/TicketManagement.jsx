@@ -135,11 +135,12 @@ const TicketManagement = () => {
   });
 
   const handleCreateTicket = () => {
-    setIsCreating(true);
-    setIsEditing(false);
-    setIsViewing(false);
-    setSelectedTicket(null);
-    createFormik.resetForm();
+    // setIsCreating(true);
+    // setIsEditing(false);
+    // setIsViewing(false);
+    // setSelectedTicket(null);
+    // createFormik.resetForm();
+    navigate("ticket-creation-form")
   };
 
   const handleEditTicket = (ticket) => {
@@ -154,10 +155,7 @@ const TicketManagement = () => {
   };
 
   const handleViewDetails = (ticket) => {
-    setIsViewing(true);
-    setIsCreating(false);
-    setIsEditing(false);
-    setSelectedTicket(ticket);
+    navigate("ticket-details", { state: { ticket } });
   };
 
   const handleCloseForm = () => {
@@ -202,7 +200,7 @@ const TicketManagement = () => {
         </button>
       </div>
 
-      {/* Ticket Creation Form */}
+      {/* Ticket Creation Form
       {isCreating && (
         <div className="ticket-form-overlay">
           <div className="ticket-form">
@@ -343,7 +341,7 @@ const TicketManagement = () => {
             </form>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Ticket Editing Form */}
       {isEditing && selectedTicket && (
@@ -502,101 +500,6 @@ const TicketManagement = () => {
       )}
 
       {/* Ticket Details View */}
-      {isViewing && selectedTicket && (
-        <div className="ticket-form-overlay">
-          <div className="ticket-form">
-            <div className="form-header">
-              <h2>Ticket Details</h2>
-              <button className="close-form" onClick={handleCloseForm}>
-                Close
-              </button>
-            </div>
-
-            <div className="ticket-details-view">
-              <div className="details-grid">
-                <div className="detail-row">
-                  <span className="detail-label">Ticket ID:</span>
-                  <span className="detail-value">{selectedTicket.id}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Subscriber Number:</span>
-                  <span className="detail-value">
-                    {selectedTicket.subscriber}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Category:</span>
-                  <span className="detail-value">
-                    {selectedTicket.category}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Type:</span>
-                  <span className="detail-value">{selectedTicket.type}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Status:</span>
-                  <span
-                    className={`detail-value status ${selectedTicket.status?.toLowerCase()}`}
-                  >
-                    {selectedTicket.status}
-                  </span>
-                </div>
-
-                <div className="detail-row">
-                  <span className="detail-label">Created:</span>
-                  <span className="detail-value">
-                    {formatDate(selectedTicket.created)} by{" "}
-                    {selectedTicket.createdBy || "N/A"}
-                  </span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Last Updated:</span>
-                  <span className="detail-value">
-                    {formatDate(selectedTicket.updated)} by{" "}
-                    {selectedTicket.updatedBy || "N/A"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="description-section">
-                <h3>Description</h3>
-                <div className="description-content">
-                  <p>{selectedTicket.description}</p>
-                </div>
-              </div>
-
-              <div className="notes-section">
-                <h3>Notes & Comments</h3>
-                {selectedTicket?.notes?.length > 0 ? (
-                  selectedTicket.notes.map((note, index) => (
-                    <div key={index} className="note-item">
-                      <div className="note-header">
-                        <span className="note-date">
-                          {formatDate(note.date)}
-                        </span>
-                        <span className="note-author">by {note.author}</span>
-                      </div>
-                      <p className="note-text">{note.text}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="no-notes">No notes available</p>
-                )}
-              </div>
-
-              <div className="view-actions">
-                <button
-                  className="edit-btn"
-                  onClick={() => handleEditTicket(selectedTicket)}
-                >
-                  Edit Ticket
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Tickets List */}
       {!isCreating && !isEditing && !isViewing && (

@@ -36,6 +36,8 @@ import Footer from "./Layout/Footer/footer";
 import TicketManagement from "./Layout/components/TicketManagement/TicketManagement";
 import AutoLogout from "./AutoLogout";
 import NotFoundPage from "./Layout/NoFoundPage/noFoundPage";
+import TicketDetails from "./Layout/components/TicketManagement/TicketDetails";
+import TicketCreationForm from "./Layout/components/TicketManagement/TicketCreationForm";
 
 function App() {
   const handleLogout = () => {
@@ -58,6 +60,8 @@ function App() {
           element={<Dashboard handleLogout={handleLogout} /> }>
           
           <Route path="manage-ticket" element={<AutoLogout> <TicketManagement />  </AutoLogout>} />
+          <Route path="manage-ticket/ticket-details" element={<AutoLogout> <TicketDetails />  </AutoLogout>} />
+          <Route path="manage-ticket/ticket-creation-form" element={<AutoLogout> <TicketCreationForm />  </AutoLogout>} />
           <Route path="learn-how-to" element={  <AutoLogout> <LearnHowTo />  </AutoLogout>} />
           <Route path="trending-faq" element={  <AutoLogout> <FAQComponent /> </AutoLogout>} />
           <Route path="faq-details/:id" element={  <AutoLogout> <FAQDetails /> </AutoLogout>} />
