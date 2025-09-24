@@ -19,7 +19,7 @@ const TicketManagement = () => {
     await vitelWirelessSageMetrics
       .get(`generals/getTicketMgt/${userdata?.partnerId}`)
       .then((res) => {
-        console.log("res", res.data.data);
+        console.log("res ticket ticket", res.data.data);
         setTickets(res.data.data);
       });
   };
@@ -36,81 +36,81 @@ const TicketManagement = () => {
     }
   }, [userdata]);
 
-  const categories = ["Network", "Billing", "Device", "Account", "Service"];
-  const issueTypes = {
-    Network: [
-      "No Service",
-      "Slow Speed",
-      "Intermittent Connection",
-      "Coverage Issue",
-    ],
-    Billing: ["Overcharge", "Payment Issue", "Plan Change", "Refund Request"],
-    Device: [
-      "Hardware Issue",
-      "Software Problem",
-      "Setup Assistance",
-      "Warranty Claim",
-    ],
-    Account: [
-      "Password Reset",
-      "Information Update",
-      "Security Concern",
-      "Account Recovery",
-    ],
-    Service: ["New Service", "Upgrade", "Downgrade", "Cancellation"],
-  };
+  // const categories = ["Network", "Billing", "Device", "Account", "Service"];
+  // const issueTypes = {
+  //   Network: [
+  //     "No Service",
+  //     "Slow Speed",
+  //     "Intermittent Connection",
+  //     "Coverage Issue",
+  //   ],
+  //   Billing: ["Overcharge", "Payment Issue", "Plan Change", "Refund Request"],
+  //   Device: [
+  //     "Hardware Issue",
+  //     "Software Problem",
+  //     "Setup Assistance",
+  //     "Warranty Claim",
+  //   ],
+  //   Account: [
+  //     "Password Reset",
+  //     "Information Update",
+  //     "Security Concern",
+  //     "Account Recovery",
+  //   ],
+  //   Service: ["New Service", "Upgrade", "Downgrade", "Cancellation"],
+  // };
 
   // Validation schema for create form
-  const createValidationSchema = Yup.object({
-    subscriber: Yup.string()
-      .required("Subscriber number is required")
-      .matches(
-        /^[0-9-]+$/,
-        "Subscriber number can only contain numbers and hyphens"
-      )
-      .min(10, "Subscriber number must be at least 10 characters"),
-    category: Yup.string().required("Issue category is required"),
-    type: Yup.string().required("Issue type is required"),
-    description: Yup.string()
-      .required("Description is required")
-      .min(10, "Description must be at least 10 characters")
-      .max(500, "Description cannot exceed 500 characters"),
-  });
+  // const createValidationSchema = Yup.object({
+  //   subscriber: Yup.string()
+  //     .required("Subscriber number is required")
+  //     .matches(
+  //       /^[0-9-]+$/,
+  //       "Subscriber number can only contain numbers and hyphens"
+  //     )
+  //     .min(10, "Subscriber number must be at least 10 characters"),
+  //   category: Yup.string().required("Issue category is required"),
+  //   type: Yup.string().required("Issue type is required"),
+  //   description: Yup.string()
+  //     .required("Description is required")
+  //     .min(10, "Description must be at least 10 characters")
+  //     .max(500, "Description cannot exceed 500 characters"),
+  // });
 
-  // Validation schema for edit form
-  const editValidationSchema = Yup.object({
-    description: Yup.string()
-      .required("Comments are required")
-      .min(10, "Comments must be at least 10 characters")
-      .max(500, "Comments cannot exceed 500 characters"),
-    status: Yup.string().required("Issue type is required"),
-  });
+  // // Validation schema for edit form
+  // const editValidationSchema = Yup.object({
+  //   description: Yup.string()
+  //     .required("Comments are required")
+  //     .min(10, "Comments must be at least 10 characters")
+  //     .max(500, "Comments cannot exceed 500 characters"),
+  //   status: Yup.string().required("Issue type is required"),
+  // });
 
   // Formik hook for create form
-  const createFormik = useFormik({
-    initialValues: {
-      subscriber: "",
-      category: "",
-      type: "",
-      status: "open",
-      createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
-      partnerId: userdata?.partnerId,
-      description: "",
-    },
-    validationSchema: createValidationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      console.log("Creating new ticket:", values);
-      vitelWirelessSageMetrics
-        .post("generals/createTicketMgt", values)
-        .then((res) => {
-          console.log("res ==>", res);
-          getAllTicket();
-          alert("New ticket created successfully!");
-          resetForm();
-          setIsCreating(false);
-        });
-    },
-  });
+  // const createFormik = useFormik({
+  //   initialValues: {
+  //     subscriber: "",
+  //     category: "",
+  //     type: "",
+  //     status: "open",
+  //     createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
+  //     partnerId: userdata?.partnerId,
+  //     description: "",
+  //   },
+  //   validationSchema: createValidationSchema,
+  //   onSubmit: async (values, { resetForm }) => {
+  //     console.log("Creating new ticket:", values);
+  //     vitelWirelessSageMetrics
+  //       .post("generals/createTicketMgt", values)
+  //       .then((res) => {
+  //         console.log("res ==>", res);
+  //         getAllTicket();
+  //         alert("New ticket created successfully!");
+  //         resetForm();
+  //         setIsCreating(false);
+  //       });
+  //   },
+  // });
 
   // Formik hook for edit form
   const editFormik = useFormik({
@@ -120,7 +120,7 @@ const TicketManagement = () => {
       createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
       partnerId: userdata?.partnerId,
     },
-    validationSchema: editValidationSchema,
+    // validationSchema: editValidationSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log("Updating ticket:", values);
       await vitelWirelessSageMetrics
@@ -200,148 +200,7 @@ const TicketManagement = () => {
         </button>
       </div>
 
-      {/* Ticket Creation Form
-      {isCreating && (
-        <div className="ticket-form-overlay">
-          <div className="ticket-form">
-            <div className="form-header">
-              <h2>Open New Ticket</h2>
-              <button className="close-form" onClick={handleCloseForm}>
-                Close
-              </button>
-            </div>
-
-            <form onSubmit={createFormik.handleSubmit}>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label htmlFor="subscriber">Subscriber Number</label>
-                  <input
-                    id="subscriber"
-                    type="text"
-                    name="subscriber"
-                    value={createFormik.values.subscriber}
-                    onChange={createFormik.handleChange}
-                    onBlur={createFormik.handleBlur}
-                    placeholder="Enter subscriber number (e.g., 123-456-7890)"
-                    className={
-                      createFormik.touched.subscriber &&
-                      createFormik.errors.subscriber
-                        ? "error"
-                        : ""
-                    }
-                  />
-                  {createFormik.touched.subscriber &&
-                    createFormik.errors.subscriber && (
-                      <div className="error-message">
-                        {createFormik.errors.subscriber}
-                      </div>
-                    )}
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="category">Issue Category</label>
-                  <select
-                    id="category"
-                    name="category"
-                    value={createFormik.values.category}
-                    onChange={createFormik.handleChange}
-                    onBlur={createFormik.handleBlur}
-                    className={
-                      createFormik.touched.category &&
-                      createFormik.errors.category
-                        ? "error"
-                        : ""
-                    }
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                  {createFormik.touched.category &&
-                    createFormik.errors.category && (
-                      <div className="error-message">
-                        {createFormik.errors.category}
-                      </div>
-                    )}
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="type">Issue Type</label>
-                  <select
-                    id="type"
-                    name="type"
-                    value={createFormik.values.type}
-                    onChange={createFormik.handleChange}
-                    onBlur={createFormik.handleBlur}
-                    disabled={!createFormik.values.category}
-                    className={
-                      createFormik.touched.type && createFormik.errors.type
-                        ? "error"
-                        : ""
-                    }
-                  >
-                    <option value="">Select Type</option>
-                    {createFormik.values.category &&
-                      issueTypes[createFormik.values.category].map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                  </select>
-                  {createFormik.touched.type && createFormik.errors.type && (
-                    <div className="error-message">
-                      {createFormik.errors.type}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description">
-                  Please describe the issue in details
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={createFormik.values.description}
-                  onChange={createFormik.handleChange}
-                  onBlur={createFormik.handleBlur}
-                  rows="4"
-                  placeholder="Describe the issue in detail..."
-                  className={
-                    createFormik.touched.description &&
-                    createFormik.errors.description
-                      ? "error"
-                      : ""
-                  }
-                />
-                {createFormik.touched.description &&
-                  createFormik.errors.description && (
-                    <div className="error-message">
-                      {createFormik.errors.description}
-                    </div>
-                  )}
-                <div className="character-count">
-                  {createFormik.values.description.length}/500 characters
-                </div>
-              </div>
-
-              <div className="form-actions">
-                <button
-                  type="submit"
-                  className="submit-btn"
-                  disabled={createFormik.isSubmitting}
-                >
-                  {createFormik.isSubmitting ? "Creating..." : "Create Ticket"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )} */}
+   
 
       {/* Ticket Editing Form */}
       {isEditing && selectedTicket && (
@@ -569,12 +428,12 @@ const TicketManagement = () => {
                     </div>
 
                     <div className="ticket-actions">
-                      <button
+                      {/* <button
                         className="action-btn edit-btn"
                         onClick={() => handleEditTicket(ticket)}
                       >
                         Edit
-                      </button>
+                      </button> */}
                       <button
                         className="action-btn view-btn"
                         onClick={() => handleViewDetails(ticket)}

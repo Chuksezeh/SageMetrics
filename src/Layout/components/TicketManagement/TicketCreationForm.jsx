@@ -2,11 +2,24 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import "./TicketCreationForm.css";
 import * as Yup from "yup";
-import { FiX, FiUpload, FiPaperclip, FiImage, FiFile } from "react-icons/fi";
+import { FiX, FiUpload, FiImage, FiTrash2 } from "react-icons/fi";
+import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
+import { useNavigate } from "react-router-dom";
 
 const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
-  const [attachments, setAttachments] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+  const navigate = useNavigate();
+
+  //   const getAllTicket = async () => {
+  //     await vitelWirelessSageMetrics
+  //       .get(`generals/getTicketMgt/${userdata?.partnerId}`)
+  //       .then((res) => {
+  //         console.log("res", res.data.data);
+  //         // setTickets(res.data.data);
+  //       });
+  //   };
 
   // Validation schema
   const validationSchema = Yup.object({
@@ -22,7 +35,7 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
     description: Yup.string()
       .required("Description is required")
       .min(10, "Description must be at least 10 characters")
-      .max(500, "Description must not exceed 500 characters"),
+      .max(250, "Description must not exceed 250 characters"),
     priority: Yup.string().required("Priority is required"),
   });
 
@@ -32,13 +45,16 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
       subscriber: "",
       category: "",
       type: "",
+      createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
+      partnerId: userdata?.partnerId,
       description: "",
-      priority: "medium",
+      priority: "",
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         // Prepare form data with files
+        setIsUploading(true);
         const formData = new FormData();
 
         // Append form values
@@ -46,21 +62,22 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
           formData.append(key, values[key]);
         });
 
-        // Append attachments
-        attachments.forEach((file, index) => {
-          formData.append(`attachments`, file);
-        });
+        // Append single image if selected
+        if (selectedImage) {
+          formData.append("image", selectedImage);
+        }
 
-        // Append metadata
-        formData.append("createdBy", "current_user_id"); // Replace with actual user
-        formData.append("createdAt", new Date().toISOString());
-
-        await onSubmit(formData);
-
-        // Reset form on success
-        resetForm();
-        setAttachments([]);
-        onClose();
+        vitelWirelessSageMetrics
+          .post("generals/createTicketMgt", formData)
+          .then((res) => {
+            console.log("res ==>", res);
+            setIsUploading(false);
+            navigate("/segametric-inside/manage-ticket");
+            // navigator('/manage-ticket')
+            alert("New ticket created successfully!");
+            resetForm();
+            setSelectedImage(null);
+          });
       } catch (error) {
         console.error("Error creating ticket:", error);
       } finally {
@@ -69,57 +86,34 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
     },
   });
 
-  // Handle file upload
-  const handleFileUpload = (event) => {
-    const files = Array.from(event.target.files);
-    const validFiles = files.filter((file) => {
-      // Validate file type and size
-      const isValidType =
-        file.type.startsWith("image/") ||
-        file.type === "application/pdf" ||
-        file.type.startsWith("text/") ||
-        file.type.includes("document");
+  // Handle single image upload
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
 
-      const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
+    if (!file) return;
 
-      if (!isValidType) {
-        alert(`File type not supported: ${file.name}`);
-        return false;
-      }
+    // Validate file type - only images
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file (JPEG, PNG, GIF, etc.)");
+      event.target.value = "";
+      return;
+    }
 
-      if (!isValidSize) {
-        alert(`File too large: ${file.name} (Max 10MB)`);
-        return false;
-      }
+    // Validate file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image too large. Maximum size is 10MB.");
+      event.target.value = "";
+      return;
+    }
 
-      return true;
-    });
-
-    setAttachments((prev) => [...prev, ...validFiles]);
+    // Replace existing image with new one
+    setSelectedImage(file);
     event.target.value = ""; // Reset input
   };
 
-  // Remove attachment
-  const removeAttachment = (index) => {
-    setAttachments((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // Get file icon based on type
-  const getFileIcon = (file) => {
-    if (file.type.startsWith("image/"))
-      return <FiImage className="file-icon" />;
-    if (file.type === "application/pdf")
-      return <FiFile className="file-icon" />;
-    return <FiPaperclip className="file-icon" />;
-  };
-
-  // Format file size
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  // Remove selected image
+  const removeImage = () => {
+    setSelectedImage(null);
   };
 
   // Categories and issue types
@@ -152,8 +146,6 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
     General: ["Information Request", "Complaint", "Suggestion", "Other"],
   };
 
-  //   if (!isOpen) return null;
-
   return (
     <div className="ticket-creation-overlay">
       <div className="ticket-creation-form">
@@ -171,7 +163,6 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
 
         <form onSubmit={formik.handleSubmit}>
           <div className="form-grid">
-            {/* Subscriber Number */}
             <div className="form-group">
               <label htmlFor="subscriber" className="form-label">
                 Subscriber Number *
@@ -294,55 +285,62 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
               <div className="error-message">{formik.errors.description}</div>
             )}
             <div className="character-count">
-              {formik.values.description.length}/500 characters
+              {formik.values.description.length}/250 characters
             </div>
           </div>
 
-          {/* File Attachments */}
           <div className="form-group">
-            <label className="form-label">Attachments (Optional)</label>
-            <div className="file-upload-section">
+            <label className="form-label">Attach Image (Optional)</label>
+            <div className="image-upload-section">
               <input
                 type="file"
-                id="file-upload"
-                multiple
-                accept="image/*,.pdf,.doc,.docx,.txt"
-                onChange={handleFileUpload}
+                id="image-upload"
+                accept="image/*"
+                onChange={handleImageUpload}
                 className="file-input"
                 disabled={isUploading}
               />
-              <label htmlFor="file-upload" className="file-upload-label">
-                <FiUpload className="upload-icon" />
-                <span>Click to upload files</span>
-                <small>Supports images, PDF, DOC (Max 10MB each)</small>
-              </label>
-            </div>
 
-            {/* Attachments List */}
-            {attachments.length > 0 && (
-              <div className="attachments-list">
-                <h4>Attached Files ({attachments.length})</h4>
-                {attachments.map((file, index) => (
-                  <div key={index} className="attachment-item">
-                    {getFileIcon(file)}
-                    <div className="file-info">
-                      <span className="file-name">{file.name}</span>
-                      <span className="file-size">
-                        {formatFileSize(file.size)}
-                      </span>
-                    </div>
+              {!selectedImage ? (
+                <label htmlFor="image-upload" className="image-upload-label">
+                  <FiUpload className="upload-icon" />
+                  <span>Click to upload an image</span>
+                  <small>Supports JPG, PNG, GIF (Max 10MB)</small>
+                </label>
+              ) : (
+                <div className="image-preview">
+                  <div className="preview-header">
+                    <span>Selected Image</span>
                     <button
                       type="button"
-                      className="remove-file-btn"
-                      onClick={() => removeAttachment(index)}
+                      className="remove-image-btn"
+                      onClick={removeImage}
                       disabled={formik.isSubmitting}
                     >
-                      <FiX size={14} />
+                      <FiTrash2 size={16} />
                     </button>
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className="preview-content">
+                    <img
+                      src={URL.createObjectURL(selectedImage)}
+                      alt="Preview"
+                      className="image-thumbnail"
+                    />
+                    <div className="image-info">
+                      <span className="image-name">{selectedImage.name}</span>
+                      <span className="image-size">
+                        {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
+                      </span>
+                    </div>
+                  </div>
+                  <div className="image-replace">
+                    <label htmlFor="image-upload" className="replace-link">
+                      Click to replace image
+                    </label>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Form Actions */}
@@ -355,12 +353,8 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={formik.isSubmitting || !formik.isValid}
-            >
-              {formik.isSubmitting ? (
+            <button type="submit" className="submit-btn" disabled={isUploading}>
+              {isUploading ? (
                 <>
                   <div className="spinner"></div>
                   Creating Ticket...
