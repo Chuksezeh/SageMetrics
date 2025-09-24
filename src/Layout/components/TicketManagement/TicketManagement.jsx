@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./TicketManagement.css";
+import "./TicketTable.scss";
 import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 const TicketManagement = () => {
   const [activeTab, setActiveTab] = useState("open");
@@ -140,7 +142,7 @@ const TicketManagement = () => {
     // setIsViewing(false);
     // setSelectedTicket(null);
     // createFormik.resetForm();
-    navigate("ticket-creation-form")
+    navigate("ticket-creation-form");
   };
 
   const handleEditTicket = (ticket) => {
@@ -199,8 +201,6 @@ const TicketManagement = () => {
           Open New Ticket
         </button>
       </div>
-
-   
 
       {/* Ticket Editing Form */}
       {isEditing && selectedTicket && (
@@ -390,60 +390,191 @@ const TicketManagement = () => {
                 <p>No {activeTab} tickets found.</p>
               </div>
             ) : (
-              filteredTickets.map((ticket) => (
-                <div key={ticket.id} className="ticket-card">
-                  <div className="ticket-main">
-                    <div className="ticket-id">{ticket.id}</div>
-                    <div className="ticket-subscriber">{ticket.subscriber}</div>
-                    <div className="ticket-category">{ticket.category}</div>
-                    <div className="ticket-type">{ticket.type}</div>
-                    <div
-                      className={`ticket-status ${ticket.status
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                    >
-                      {ticket.status}
-                    </div>
-                    <div
-                      className={`ticket-priority ${ticket?.priority?.toLowerCase()}`}
-                    >
-                      {ticket.priority}
-                    </div>
-                  </div>
+              // filteredTickets.map((ticket) => (
+              //   <div key={ticket.id} className="ticket-card">
+              //     <div className="ticket-main">
+              //       <div className="ticket-id">{ticket.id}</div>
+              //       <div className="ticket-subscriber">{ticket.subscriber}</div>
+              //       <div className="ticket-category">{ticket.category}</div>
+              //       <div className="ticket-type">{ticket.type}</div>
+              //       <div
+              //         className={`ticket-status ${ticket.status
+              //           .toLowerCase()
+              //           .replace(" ", "-")}`}
+              //       >
+              //         {ticket.status}
+              //       </div>
+              //       <div
+              //         className={`ticket-priority ${ticket?.priority?.toLowerCase()}`}
+              //       >
+              //         {ticket.priority}
+              //       </div>
+              //     </div>
 
-                  <div className="ticket-description">
-                    <p>{ticket.description}</p>
-                  </div>
+              //     <div className="ticket-description">
+              //       <p>{ticket.description}</p>
+              //     </div>
 
-                  <div className="ticket-footer">
-                    <div className="ticket-dates">
-                      <span>
-                        Created: {formatDate(ticket.created)} by{" "}
-                        {ticket.createdBy}
-                      </span>
-                      <span>
-                        Updated: {formatDate(ticket.updated)} by{" "}
-                        {ticket.updatedBy}
-                      </span>
-                    </div>
+              //     <div className="ticket-footer">
+              //       <div className="ticket-dates">
+              //         <span>
+              //           Created: {formatDate(ticket.created)} by{" "}
+              //           {ticket.createdBy}
+              //         </span>
+              //         <span>
+              //           Updated: {formatDate(ticket.updated)} by{" "}
+              //           {ticket.updatedBy}
+              //         </span>
+              //       </div>
 
-                    <div className="ticket-actions">
-                      {/* <button
+              //       <div className="ticket-actions">
+              //         <button
+              //           className="action-btn edit-btn"
+              //           onClick={() => handleEditTicket(ticket)}
+              //         >
+              //           Edit
+              //         </button>
+              //         <button
+              //           className="action-btn view-btn"
+              //           onClick={() => handleViewDetails(ticket)}
+              //         >
+              //           View Details
+              //         </button>
+              //       </div>
+              //     </div>
+              //   </div>
+              // ))
+
+              <div class="contai">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>Ticket Type</th>
+                      <th>Updated date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredTickets.map((ticket) => (
+                      <tr key={ticket.id}>
+                        <td data-label="Description">{ticket.description} </td>
+                        <td data-label="Status">
+                          <span
+                            className={`status-badge ${
+                              ticket.status === "open" ? "active" : "Open"
+                            } ${
+                              ticket.status === "In Progress"
+                                ? "in-progress"
+                                : "Open"
+                            } 
+                  ${ticket.status === "Resolved" ? "resolved" : "Open"} ${
+                              ticket.status === "closed" ? "closed" : "Open"
+                            } ${
+                              ticket.status === "cancelled"
+                                ? "cancelled"
+                                : "Open"
+                            } ${
+                              ticket.status === "proccessing"
+                                ? "proccessing"
+                                : "Open"
+                            } 
+                  ${ticket.status === "completed" ? "completed" : "Open"}  ${
+                              ticket.status === "on-hold" ? "on-hold" : "Open"
+                            }  ${
+                              ticket.status === "reopened" ? "reopened" : "Open"
+                            }  ${
+                              ticket.status === "escalated"
+                                ? "escalated"
+                                : "Open"
+                            }  
+                  ${ticket.status === "new" ? "new" : "Open"}  ${
+                              ticket.status === "assigned" ? "assigned" : "Open"
+                            }  ${
+                              ticket.status === "deferred" ? "deferred" : "Open"
+                            }  ${
+                              ticket.status === "waiting on customer"
+                                ? "waiting-on-customer"
+                                : "Open"
+                            }  
+                  ${
+                    ticket.status === "waiting on third party"
+                      ? "waiting-on-third-party"
+                      : "Open"
+                  }  ${ticket.status === "hold" ? "hold" : "Open"}  ${
+                              ticket.status === "pending" ? "pending" : "Open"
+                            }`}
+                          >
+                            {ticket.status === "pending" ? "pending" : "Open"}
+                          </span>
+                        </td>
+                        <td data-label="Ticket Type">{ticket.type} </td>
+                        <td data-label="Updated Date">
+                          {" "}
+                          {moment(ticket.updated).format("lll")}{" "}
+                        </td>
+
+                        <div className="p-4  btn-group-div">
+                          {/* <button
                         className="action-btn edit-btn"
                         onClick={() => handleEditTicket(ticket)}
                       >
                         Edit
                       </button> */}
-                      <button
-                        className="action-btn view-btn"
-                        onClick={() => handleViewDetails(ticket)}
+                          <button
+                            className="action-btn view-btn"
+                            onClick={() => handleViewDetails(ticket)}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </tr>
+                    ))}
+
+                    {/* <tr>
+                  <td data-label="first-name">July</td>
+                  <td data-label="last-name">Dooley</td>
+                  <td data-label="email">july@example.com</td>
+                   <div className="p-4 btn-group-div">
+                   <button
+                        className="action-btn edit-btn"
+                        // onClick={() => handleEditTicket(ticket)}
                       >
-                        View Details
+                        Edit
                       </button>
-                    </div>
-                  </div>
-                </div>
-              ))
+                  <button
+                    className="action-btn view-btn"
+                  // onClick={() => handleViewDetails(ticket)}
+                  >
+                    View Details
+                  </button>
+                   </div>
+                 
+                </tr> */}
+                    {/* <tr>
+                  <td data-label="first-name">July</td>
+                  <td data-label="last-name">Dooley</td>
+                  <td data-label="email">july@example.com</td>
+                   <div className="p-4 btn-group-div">
+                   <button
+                        className="action-btn edit-btn"
+                        // onClick={() => handleEditTicket(ticket)}
+                      >
+                        Edit
+                      </button>
+                  <button
+                    className="action-btn view-btn"
+                  // onClick={() => handleViewDetails(ticket)}
+                  >
+                    View Details
+                  </button>
+                   </div>
+                 
+                </tr> */}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </>
