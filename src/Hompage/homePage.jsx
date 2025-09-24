@@ -37,44 +37,43 @@ const HomePage = () => {
     ,[])
         
    
-    const handleLoginPartner = async (data) => {
-        setLoading(true);
-       if(rememberMe === true){
-        localStorage.setItem("rememberData",JSON.stringify(data));
-        } else {
-        localStorage.removeItem("rememberData");
-        }
+      const handleLoginPartner = async (data) => {
+    setLoading(true);
 
-        const payload = {
-            username: data?.username || userRememberData?.username,
-            password: data?.password || userRememberData?.password,
-        };
+    if (rememberMe === true) {
+      localStorage.setItem("rememberData", JSON.stringify(data));
+    } else {
+      localStorage.removeItem("rememberData");
+    }
 
-      try {
-            const res = await vitelWirelessSageMetrics.post(
-                "/registrations/partnerSignIn",
-                payload
-            );
-
-            console.log("res", res);
-
-            if (res.data.success === true) {
-                localStorage.setItem("SageData",JSON.stringify(res.data?.userDetails));
-               
-                navigate("/dashboard");
-            } else {
-                setError(true);
-                setErrorMessage(res.data.message || "Login failed");
-            }
-        } catch (err) {
-            console.log("err", err);
-            setError(true);
-            setErrorMessage("Unexpected error occurred, please try again later");
-            setShowForm(true);
-        } finally {
-            setLoading(false);
-        }
+    const payload = {
+      username: data?.username || userRememberData?.username,
+      password: data?.password || userRememberData?.password,
     };
+
+    try {
+      const res = await vitelWirelessSageMetrics.post(
+        "/registrations/partnerSignIn",
+        payload
+      );
+
+      if (res.data.success === true) {
+        localStorage.setItem("SageData", JSON.stringify(res.data?.userDetails));
+
+        navigate("/segametric-dashboard/manage-ticket", { replace: true });
+      } else {
+        setError(true);
+        setErrorMessage(res.data.message || "Login failed");
+      }
+    } catch (err) {
+      console.log("err", err);
+      setError(true);
+      setErrorMessage("Unexpected error occurred, please try again later");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 
     return (

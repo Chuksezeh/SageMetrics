@@ -1,10 +1,14 @@
 /* TicketManagement.css */
 .ticket-management {
-  max-width: 1200px;
+
   margin: 0 auto;
-  /* margin-top: 5%; */
-  /* margin-bottom: 10%; */
-  padding: 1.5rem;
+ 
+  padding: 1.1rem;
+}
+
+.btn-group-div {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .ticket-header {
@@ -15,6 +19,7 @@
   padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
 }
+
 
 .ticket-header h1 {
   font-size: 1.875rem;
@@ -153,6 +158,8 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
+
+
 
 .submit-btn:hover {
   background-color: #059669;

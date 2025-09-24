@@ -1,20 +1,36 @@
 import React from "react";
 import "./Header.css";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ setSidebarOpen }) => {
+
+
+  const navigate = useNavigate(); 
+
+  const handleGoBack = () =>{
+    navigate(-1);
+  }
   return (
     <div className="header-seg">
       <div className="header-content">
-        <div className="flex items-center">
+        <div className="header-left-contain">
+    <div className="flex items-center">
           {/* Mobile menu button */}
           <button
             className="mobile-menu-button"
             onClick={() => setSidebarOpen(true)}
           >
-            <RxHamburgerMenu />
+            <RxHamburgerMenu size={20} />
           </button>
+          
         </div>
+
+        <div onClick={handleGoBack} style={{cursor:"pointer"}}> <MdOutlineKeyboardBackspace  size={30}/>  </div>
+        </div>
+        
+
 
         {/* Actions */}
         <div className="header-actions">
