@@ -282,7 +282,8 @@ const TicketDetails = () => {
                         <p className="note-text">{note.text}</p>
 
                         {/* Display note attachments */}
-                        {renderNoteAttachments(note.attachments)}
+                        {/* {renderNoteAttachments(note.attachments)} */}
+                        <img src={note?.imageUrl} className="note-image" />
                       </div>
                     ))
                   ) : (

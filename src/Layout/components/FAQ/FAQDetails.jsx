@@ -1,265 +1,120 @@
-import React, { useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import "./FAQDetails.css";
 
 const FAQDetails = () => {
   const { id } = useParams();
+  const [imageError, setImageError] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
-  const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
-const navigate = useNavigate();
+  const userdata = JSON.parse(localStorage.getItem("SageData") || "{}");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { faq } = location.state || {};
+  const content = faq;
 
   useEffect(() => {
     if (!userdata) {
-        navigate("/");
+      navigate("/");
     }
-}, [userdata]);
+  }, [userdata, navigate]);
 
-console.log("FAQ ID from URL:", id);
-
- const scrolltop = () => {
+  useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
-  };
-  useEffect(() => {
-    scrolltop();
   }, []);
 
+  // Function to safely render HTML content
+  const createMarkup = (htmlContent) => {
+    return { __html: htmlContent || "" };
+  };
 
-  // Sample data - in a real app, this would come from an API
-  const faqArticle = [ 
-    {
-    id: 1,
-    title: "How do I reset my password?",
-    category: "Account",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
-      <p>To reset your password, go to the login page and click "Forgot Password". Enter your email address and follow the instructions sent to your inbox.',</p>
-      
-      <h3>Steps to reset your password:</h3>
-      <ol>
-        <li>Go to the login page of our application</li>
-        <li>Click on the "Forgot Password" link below the login form</li>
-        <li>Enter the email address associated with your account</li>
-        <li>Check your email inbox for a password reset link</li>
-        <li>Click the link in the email (valid for 24 hours)</li>
-        <li>Create a new strong password following our security guidelines</li>
-        <li>Confirm your new password and save changes</li>
-      </ol>
-      
-      <h3>Password requirements:</h3>
-      <ul>
-        <li>At least 8 characters long</li>
-        <li>Include uppercase and lowercase letters</li>
-        <li>Include at least one number</li>
-        <li>Include at least one special character (!@#$%^&*)</li>
-        <li>Should not be a password you've used previously</li>
-      </ul>
-      
-      <div class="media-container">
-        <img src="https://cdn.dribbble.com/userupload/15899497/file/original-200cc607a6574e27aa84714962f94db4.png?crop=0x0-3201x2401&format=webp&resize=400x300&vertical=center" alt="Password reset screen example" />
-        <p class="media-caption">The password reset screen where you can request a new password</p>
-      </div>
-      
-      <h3>Troubleshooting common issues:</h3>
-      <p><strong>Not receiving the reset email?</strong> Check your spam folder or try requesting another reset after 5 minutes.</p>
-      <p><strong>Reset link expired?</strong> Password reset links are only valid for 24 hours for security reasons. Request a new one if yours has expired.</p>
-      <p><strong>Remembered your old password?</strong> You can simply go back to the login page and sign in with your current password.</p>
-      
-      <div class="video-container">
-        <h3>Video tutorial:</h3>
-        <div class="video-placeholder">
-          <div class="play-button"></div>
-          <p>Video: How to reset your password in 3 easy steps</p>
+  // Function to extract text content for image alt tags
+  const getImageAltText = (title) => {
+    return title ? `Illustration for ${title}` : "FAQ related image";
+  };
+
+  // Function to get video title
+  const getVideoTitle = (title) => {
+    return title ? `Video tutorial for ${title}` : "FAQ related video";
+  };
+
+  if (!content) {
+    return (
+      <div className="faq-details-container">
+        <div className="error-state">
+          <h2>Article Not Found</h2>
+          <p>The requested FAQ article could not be loaded.</p>
+          <Link to="/admin-dashboard/trending-faq" className="back-link">
+            ← Back to Trending FAQ
+          </Link>
         </div>
       </div>
-      
-      <h3>Need additional help?</h3>
-      <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
-    `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
-    },
-  },
-
-   {
-    id: 2,
-    title: "How do I become a partner?",
-    category: "Becoming a Partner",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
-      <p>To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.</p>
-      
-      <h3>How to become a partner:</h3>
-      <ol>
-        <li>Go to web page register as a partner </li>
-        <li> Click on the "Forgot Password" link below the login form   </li>
-        <li>Enter the email address associated with your account</li>
-        <li>Check your email inbox for a password reset link</li>
-        <li>Click the link in the email (valid for 24 hours)</li>
-        <li>Create a new strong password following our security guidelines</li>
-        <li>Confirm your new password and save changes</li>
-      </ol>
-      
-      <h3>Password requirements:</h3>
-      <ul>
-        <li>At least 8 characters long</li>
-        <li>Include uppercase and lowercase letters</li>
-        <li>Include at least one number</li>
-        <li>Include at least one special character (!@#$%^&*)</li>
-        <li>Should not be a password you've used previously</li>
-      </ul>
-      
-      <div class="media-container">
-        <img src="https://cdn.dribbble.com/userupload/15899497/file/original-200cc607a6574e27aa84714962f94db4.png?crop=0x0-3201x2401&format=webp&resize=400x300&vertical=center" alt="Password reset screen example" />
-        <p class="media-caption">The password reset screen where you can request a new password</p>
-      </div>
-      
-      <h3>Troubleshooting common issues:</h3>
-      <p><strong>Not receiving the reset email?</strong> Check your spam folder or try requesting another reset after 5 minutes.</p>
-      <p><strong>Reset link expired?</strong> Password reset links are only valid for 24 hours for security reasons. Request a new one if yours has expired.</p>
-      <p><strong>Remembered your old password?</strong> You can simply go back to the login page and sign in with your current password.</p>
-      
-      <div class="video-container">
-        <h3>Video tutorial:</h3>
-        <div class="video-placeholder">
-          <div class="play-button"></div>
-          <p>Video: How to reset your password in 3 easy steps</p>
-        </div>
-      </div>
-      
-      <h3>Need additional help?</h3>
-      <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
-    `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
-    },
-  },
-
-   {
-    id: 3,
-    title: "How do I sell sim as a partner?",
-    category: "Selling Sim",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
-      <p>To sell vitel wireless sim as a partner, you need to download and install a the required applications: Vitel Partner App, Vitel Agent App and Vitel KYC App.</p>
-      
-      <h3>Steps to reset your password:</h3>
-      <ol>
-        <li>Go to the login page of our application</li>
-        <li>Click on the "Forgot Password" link below the login form</li>
-        <li>Enter the email address associated with your account</li>
-        <li>Check your email inbox for a password reset link</li>
-        <li>Click the link in the email (valid for 24 hours)</li>
-        <li>Create a new strong password following our security guidelines</li>
-        <li>Confirm your new password and save changes</li>
-      </ol>
-      
-      <h3>Password requirements:</h3>
-      <ul>
-        <li>At least 8 characters long</li>
-        <li>Include uppercase and lowercase letters</li>
-        <li>Include at least one number</li>
-        <li>Include at least one special character (!@#$%^&*)</li>
-        <li>Should not be a password you've used previously</li>
-      </ul>
-      
-      <div class="media-container">
-        <img src="https://cdn.dribbble.com/userupload/15899497/file/original-200cc607a6574e27aa84714962f94db4.png?crop=0x0-3201x2401&format=webp&resize=400x300&vertical=center" alt="Password reset screen example" />
-        <p class="media-caption">The password reset screen where you can request a new password</p>
-      </div>
-      
-      <h3>Troubleshooting common issues:</h3>
-      <p><strong>Not receiving the reset email?</strong> Check your spam folder or try requesting another reset after 5 minutes.</p>
-      <p><strong>Reset link expired?</strong> Password reset links are only valid for 24 hours for security reasons. Request a new one if yours has expired.</p>
-      <p><strong>Remembered your old password?</strong> You can simply go back to the login page and sign in with your current password.</p>
-      
-      <div class="video-container">
-        <h3>Video tutorial:</h3>
-        <div class="video-placeholder">
-          <div class="play-button"></div>
-          <p>Video: How to reset your password in 3 easy steps</p>
-        </div>
-      </div>
-      
-      <h3>Need additional help?</h3>
-      <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
-    `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
-    },
-  },
-
-];
-
-
-const faqArticles = faqArticle.filter(faq => faq.id == id);
-
-
-const objDetails = { ...faqArticles };
-
-console.log("faqArticles>>", objDetails)
-
-
+    );
+  }
 
   return (
     <div className="faq-details-container">
-      {/* Breadcrumb Navigation */}
-      {/* <nav className="breadcrumb">
-        <Link to="/admin-dashboard/trending-faq">Trending FAQ</Link>
-        <span className="breadcrumb-divider">/</span>
-        <span>{faqArticle.category}</span>
-        <span className="breadcrumb-divider">/</span>
-        <span>{faqArticle.title}</span>
-      </nav> */}
-
-      {/* Article Header */}
       <div className="article-header">
-        <h1 className="article-title">{objDetails[0]?.title}</h1>
-        {/* <div className="article-author">
-          <div className="author-avatar">{faqArticle.author.avatar}</div>
-          <div className="author-info">
-            <span className="author-name">{faqArticle.author.name}</span>
-            <span className="author-role">{faqArticle.author.role}</span>
-          </div>
-        </div> */}
+        <h1 className="article-title">{content?.title}</h1>
       </div>
 
-      {/* Article Content */}
-      <article
-        className="article-content"
-        dangerouslySetInnerHTML={{ __html: objDetails[0]?.content }}
-      />
+    
+      <article className="article-content">
+        <div dangerouslySetInnerHTML={createMarkup(content?.fullDescription)} />
+      </article>
 
-      {/* Helpfulness Rating */}
+      {content?.imageUrl && !imageError && (
+        <div className="media-section image-section">
+          <div className="media-container">
+            <img
+              src={content.imageUrl}
+              alt={getImageAltText(content.title)}
+              onError={() => setImageError(true)}
+              className="article-image"
+            />
+            <p className="media-caption">Related image for {content.title}</p>
+          </div>
+        </div>
+      )}
+
+
+      {content?.videoUrl && !videoError && (
+        <div className="media-section video-section">
+          <div className="video-container">
+            <h3>Video Tutorial</h3>
+            <video
+              controls
+              className="article-video"
+              title={getVideoTitle(content.title)}
+              onError={() => setVideoError(true)}
+            >
+              <source src={content.videoUrl} type="video/mp4" />
+              <source src={content.videoUrl} type="video/webm" />
+              <source src={content.videoUrl} type="video/ogg" />
+              Your browser does not support the video tag.
+            </video>
+            <p className="media-caption">Video tutorial for {content.title}</p>
+          </div>
+        </div>
+      )}
+
+      {content?.imageUrl && imageError && (
+        <div className="media-error">
+          <p> Image could not be loaded</p>
+        </div>
+      )}
+
+      {content?.videoUrl && videoError && (
+        <div className="media-error">
+          <p> Video could not be loaded</p>
+        </div>
+      )}
+
+
       <div className="helpful-section">
         <h3>Was this article helpful?</h3>
         <div className="helpful-buttons">
@@ -268,25 +123,6 @@ console.log("faqArticles>>", objDetails)
         </div>
       </div>
 
-      {/* <form>
-        <textarea />
-      </form> */}
-
-      {/* Related Articles */}
-      <div className="related-articles">
-        <h2>Related Articles</h2>
-        <ul className="related-list">
-          {faqArticle?.relatedFaqs?.map((faq) => (
-            <li key={faq.id}>
-              <Link to={`/admin-dashboard/faq-details/${faq.id}`}>
-                {faq.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Back to FAQ List */}
       <div className="back-to-faq">
         <Link to="/admin-dashboard/trending-faq" className="back-link">
           ← Back to Trending FAQ
