@@ -13,16 +13,19 @@ const TicketManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [pendingTicket, setPendingTicket] = useState(true)
   const [tickets, setTickets] = useState([]);
   const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
   const navigate = useNavigate();
 
   const getAllTicket = async () => {
+    
     await vitelWirelessSageMetrics
       .get(`generals/getTicketMgt/${userdata?.partnerId}`)
       .then((res) => {
         console.log("res ticket ticket", res.data.data);
         setTickets(res.data.data);
+        setPendingTicket(false)
       });
   };
 
@@ -173,8 +176,11 @@ const TicketManagement = () => {
   const filteredTickets = tickets.filter((ticket) => {
     if (activeTab === "open")
       return ticket.status === "open" || ticket.status === "In Progress";
+     if (activeTab === "processing")
+      return ticket.status === "processing";
     if (activeTab === "resolved") return ticket.status === "Resolved";
     return true;
+    
   });
 
   const formatDate = (dateString) => {
@@ -189,7 +195,7 @@ const TicketManagement = () => {
 
   const statusArray = [
     { id: 3, name: "pending", value: "pending" },
-    { id: 4, name: "proccessing", value: "proccessing" },
+    { id: 4, name: "processing", value: "processing" },
     { id: 5, name: "resolved", value: "resolved" },
   ];
 
@@ -404,6 +410,12 @@ const TicketManagement = () => {
               Open Tickets
             </button>
             <button
+              className={activeTab === "processing" ? "active" : ""}
+              onClick={() => setActiveTab("processing")}
+            >
+              Processing
+            </button>
+            <button
               className={activeTab === "resolved" ? "active" : ""}
               onClick={() => setActiveTab("resolved")}
             >
@@ -416,6 +428,11 @@ const TicketManagement = () => {
               All Tickets
             </button>
           </div>
+               
+       {
+        pendingTicket ?   <div className="loader-div-Ticket"> <span className="loader"></span> </div>: null
+       }
+        
 
           <div className="tickets-list">
             {filteredTickets.length === 0 ? (
@@ -500,11 +517,11 @@ const TicketManagement = () => {
                           {ticket.description?.split(" ").length > wordLimit && " ..."}
                         </td>
                         <td data-label="Status">
-                          <span
+                          <span style={{fontWeight:"bold", textTransform:"capitalize"}}
                             className={`status-badge 
                     ${ticket.status === "open" ? "active" : ""}
-                    ${ticket.status === "In Progress" ? "in-progress" : ""}
-                    ${ticket.status === "Resolved" ? "resolved" : ""}
+                    ${ticket.status === "processing" ? "processing" : ""}
+                    ${ticket.status === "resolved" ? "resolved" : ""}
                     ${ticket.status === "closed" ? "closed" : ""}
                     
                    
