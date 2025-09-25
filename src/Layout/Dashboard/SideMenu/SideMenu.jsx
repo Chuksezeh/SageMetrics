@@ -14,14 +14,15 @@ const SideMenu = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/segametric-dashboard/manage-ticket",
       label: "Manage Ticket",
     },
+     {
+      path: "/segametric-dashboard/trending-faq",
+      label: "Trending FAQ",
+    },
     {
       path: "/segametric-dashboard/learn-how-to",
       label: "Learn How To",
     },
-    {
-      path: "/segametric-dashboard/trending-faq",
-      label: "Trending FAQ",
-    },
+   
   ];
 
  

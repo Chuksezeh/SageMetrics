@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './FAQComponent.css';
 import { Link, useNavigate } from 'react-router-dom';
+import useFetchData from '../../../Utilities/getFunction';
+import moment from 'moment/moment';
 
 const FAQComponent = () => {
   const [activeTopic, setActiveTopic] = useState('All');
@@ -17,6 +19,10 @@ const FAQComponent = () => {
 
   // Sample data
   // const topics = ['All', 'Account', 'Billing', 'Software', 'Hardware', 'Network'];
+
+  const{data, isPending, error}= useFetchData("generals/faqs");
+
+  console.log("data", data)
   
   const faqs = [
     {
@@ -32,7 +38,7 @@ const FAQComponent = () => {
       question: 'How do I become a partner?',
       topic: 'Becoming a Partner',
       date: '2023-10-12',
-     shortContent: 'To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.',
+      shortContent: 'To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.',
       hasMedia: false
     },
     {
@@ -69,7 +75,7 @@ const FAQComponent = () => {
     // }
   ];
 
-  const filteredFAQs = activeTopic === 'All' ? faqs : faqs.filter(faq => faq.id == activeTopic);
+  const filteredFAQs = activeTopic === 'All' ? data?.data : data?.data.filter(faq => faq.id == activeTopic);
 
    
 
@@ -96,7 +102,7 @@ const FAQComponent = () => {
             className="topic-filter"
           >
             <option value="All">All</option>
-            {faqs.map(top => (
+            {faqs?.map(top => (
               
               <option key={top.id} value={top.id}>{top.topic}</option>
             ))}
@@ -105,12 +111,11 @@ const FAQComponent = () => {
       </div>
       
       <div className="faq-list">
-        {filteredFAQs.map(faq => (
+        {filteredFAQs?.map(faq => (
           <div key={faq.id} className="faq-item">
             <div 
               className="faq-question"
-              onClick={() => toggleQuestion(faq.id)}
-            >
+              onClick={() => toggleQuestion(faq.id)}>
               <h3>{faq.question}</h3>
               <span className="indicator">
                 {expandedQuestion === faq.id ? '−' : '+'}
@@ -118,23 +123,28 @@ const FAQComponent = () => {
             </div>
             
             {expandedQuestion === faq.id && (
-              <div className="faq-answer">
-                <div className="faq-meta">
-                  <span className="topic-badge">{faq.topic}</span>
-                  <span className="date">Updated: {faq.date}</span>
-                </div>
-                <p>{faq.shortContent}</p>
-                {faq.hasMedia && (
-                  <div className="media-notice">
-                    {/* <span className="media-icon">🖼️</span> */}
-                    This article contains helpful graphics and videos
-                  </div>
-                )}
-                <Link to={`/segametric-dashboard/faq-details/${faq.id}`} className="read-full-article-btn">
-                  Read Full Article →
-                </Link>
-              </div>
-            )}
+       <div className="faq-answer">
+       <div className="faq-meta">
+         <span className="topic-badge">{faq.title}</span>
+        <span className="date">Updated: {moment(faq.createdAt).format("lll")}</span>
+       </div>
+    <p>{faq.shortDescription}</p>
+    {faq.hasMedia && (
+      <div className="media-notice">
+        {/* <span className="media-icon">🖼️</span> */}
+        This article contains helpful graphics and videos
+      </div>
+    )}
+    <Link
+      to={{
+        pathname: `/segametric-dashboard/faq-details/${faq.id}`,}}
+        state={{ faq }}
+      className="read-full-article-btn"
+    >
+      Read Full Article →
+    </Link>
+  </div>
+)}
           </div>
         ))}
       </div>
