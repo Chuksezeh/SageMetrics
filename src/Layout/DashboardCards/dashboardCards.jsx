@@ -100,7 +100,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
             <div className="card-action-bar">
               <Link
                 className="float-lg-none link"
-                to="/segametric-inside/manage-ticket"
+                to="/segametric-dashboard/manage-ticket"
                 style={{ fontSize: "16px", fontWeight: "700" }}
               >
                 Open/edit Ticket <RiArrowRightSLine size={25}/>
@@ -115,7 +115,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
               <i className="fas fa-desktop cardIcon"></i>
             </div>
             <Link
-              to="/segametric-inside/trending-faq"
+              to="/segametric-dashboard/trending-faq"
               className="wrimagecard-topimage_title h-140"
             >
               <h2 className="h4 text-center">FAQ’s</h2>
@@ -124,7 +124,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
             <div className="card-action-bar">
               <Link
                 className="float-right link"
-                to="/segametric-inside/trending-faq"
+                to="/segametric-dashboard/trending-faq"
                  style={{ fontSize: "16px", fontWeight: "700" }}
               >
                 See FAQ’s  <RiArrowRightSLine size={25}/>
@@ -145,7 +145,7 @@ const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
             <div className="card-action-bar">
               <Link
                 className="float-right link"
-                to="/segametric-inside/learn-how-to"
+                to="/segametric-dashboard/learn-how-to"
                 style={{ fontSize: "16px", fontWeight: "700" }}
               >
                See How to  <RiArrowRightSLine size={25}/>

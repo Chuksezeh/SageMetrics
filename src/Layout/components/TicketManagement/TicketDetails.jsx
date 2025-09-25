@@ -1,19 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { FiPaperclip, FiImage, FiX, FiSend } from "react-icons/fi";
 import "./TicketDetails.css";
+import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
 
 const TicketDetails = () => {
-  const [selectedTicket, setSelectedTicket] = useState();
+  const [selectedTicket, setSelectedTicket] = useState(null);
   const [newNote, setNewNote] = useState("");
+  const [allTicketNote, setAllTicketNote] = useState([]);
+  const [noteAttachments, setNoteAttachments] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const userdata = JSON.parse(localStorage.getItem("SageData") || "{}");
   const location = useLocation();
+  let ticketId;
 
   useEffect(() => {
-    setSelectedTicket(location.state.ticket);
-  }, [location.state.ticket]);
+    if (location.state?.ticket) {
+      setSelectedTicket(location.state.ticket);
+      ticketId = location?.state?.ticket.id;
+    }
+  }, [location.state]);
 
-  console.log("location.state.ticket", location.state.ticket);
+  useEffect(() => {
+    getTicketById();
+  }, []);
 
-  
+  const getTicketById = async () => {
+    console.log("selectedState");
+    await vitelWirelessSageMetrics
+      .get(`generals/getTicketNotes/${ticketId}`)
+      .then((res) => {
+        console.log("ticket note by id", res.data.data);
+        setAllTicketNote(res.data.data);
+      });
+  };
+
+  console.log("selectedTicket", selectedTicket);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -25,32 +47,132 @@ const TicketDetails = () => {
     );
   };
 
-  const handleAddNote = () => {
-    if (!newNote.trim()) return;
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    console.log("files of image", file);
 
-    const newNoteObj = {
-      date: new Date().toISOString(),
-      author: "Current User", // You can replace this with actual user data
-      text: newNote,
-    };
+    if (!file) return;
 
-    const updatedTicket = {
-      ...selectedTicket,
-      notes: [...selectedTicket.notes, newNoteObj],
-    };
+    // Validate file type - only images
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file (JPEG, PNG, GIF, etc.)");
+      event.target.value = "";
+      return;
+    }
 
-    setSelectedTicket(updatedTicket);
-    setNewNote("");
+    // Validate file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image too large. Maximum size is 10MB.");
+      event.target.value = "";
+      return;
+    }
+
+    // Add new file to attachments array
+    setNoteAttachments((prev) => [...prev, file]);
+    event.target.value = "";
   };
 
-  const isReply = (note, index, notes) => {
-   
-    return index > 0 && notes[index - 1].author !== note.author;
+  const removeAttachment = (index) => {
+    setNoteAttachments((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const getFileIcon = (file) => {
+    if (file.type.startsWith("image/"))
+      return <FiImage className="file-icon" />;
+    return <FiPaperclip className="file-icon" />;
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  const handleAddNote = async () => {
+    if (!newNote.trim() && noteAttachments.length === 0) return;
+
+    setIsUploading(true);
+
+    try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("noteText", newNote);
+      formData.append("ticketId", selectedTicket.id);
+      formData.append("author", `${userdata?.firstName} ${userdata?.lastName}`);
+      formData.append("partnerId", userdata?.partnerId);
+      formData.append("role", "customer");
+
+      // Append attachments
+      noteAttachments.forEach((file) => {
+        formData.append("image", file);
+      });
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+      await vitelWirelessSageMetrics
+        .post("generals/addTicketNote", formData)
+        .then((res) => {
+          console.log("res", res.data);
+          getTicketById();
+          setNewNote("");
+          setNoteAttachments([]);
+        });
+    } catch (error) {
+      console.error("Error adding note:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const renderNoteAttachments = (attachments) => {
+    if (!attachments || attachments.length === 0) return null;
+
+    return (
+      <div className="note-attachments">
+        {attachments.map((attachment, index) => (
+          <div key={attachment.id || index} className="note-attachment-item">
+            {attachment.type?.startsWith("image/") ? (
+              <div className="note-image-attachment">
+                <img
+                  src={attachment.url}
+                  alt={attachment.filename}
+                  className="note-image"
+                  onClick={() => window.open(attachment.url, "_blank")}
+                />
+                <span className="attachment-filename">
+                  {attachment.filename}
+                </span>
+              </div>
+            ) : (
+              <div className="note-file-attachment">
+                {getFileIcon(attachment)}
+                <div className="file-info">
+                  <span className="file-name">{attachment.filename}</span>
+                  <span className="file-size">
+                    {formatFileSize(attachment.size)}
+                  </span>
+                </div>
+                <a
+                  href={attachment.url}
+                  download={attachment.filename}
+                  className="download-link"
+                >
+                  Download
+                </a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div>
-      {selectedTicket && (
+      {selectedTicket ? (
         <div className="ticket-detail-container">
           <div className="ticket-form-details">
             <div className="form-header">
@@ -108,20 +230,47 @@ const TicketDetails = () => {
                 <h3>Description</h3>
                 <div className="description-content">
                   <p>{selectedTicket.description}</p>
+
+                  {/* Display ticket attachments if any */}
+                  {selectedTicket.attachments &&
+                    selectedTicket.attachments.filter((att) =>
+                      att.type?.startsWith("image/")
+                    ).length > 0 && (
+                      <div className="description-images">
+                        <h4>Attached Images</h4>
+                        <div className="image-grid">
+                          {selectedTicket.attachments
+                            .filter((att) => att.type?.startsWith("image/"))
+                            .map((image, index) => (
+                              <div
+                                key={image.id || index}
+                                className="image-item"
+                              >
+                                <img
+                                  src={image.url}
+                                  alt={image.filename}
+                                  className="description-image"
+                                />
+                                <span className="image-filename">
+                                  {image.filename}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
                 </div>
               </div>
 
               <div className="notes-section">
                 <h3>Notes & Comments</h3>
                 <div className="notes-thread">
-                  {selectedTicket?.notes?.length > 0 ? (
-                    selectedTicket.notes.map((note, index) => (
+                  {allTicketNote?.length > 0 ? (
+                    allTicketNote?.map((note, index) => (
                       <div
-                        key={index}
+                        key={note?.noteId || index}
                         className={`note-item ${
-                          isReply(note, index, selectedTicket.notes)
-                            ? "reply"
-                            : "admin-message"
+                          note.role === "customer" ? "reply" : "admin-message"
                         }`}
                       >
                         <div className="note-header">
@@ -131,6 +280,9 @@ const TicketDetails = () => {
                           </span>
                         </div>
                         <p className="note-text">{note.text}</p>
+
+                        {/* Display note attachments */}
+                        {renderNoteAttachments(note.attachments)}
                       </div>
                     ))
                   ) : (
@@ -146,28 +298,94 @@ const TicketDetails = () => {
                     value={newNote}
                     onChange={(e) => setNewNote(e.target.value)}
                     placeholder="Type your note or comment here..."
+                    rows={4}
                   />
+
+                  {/* File Upload Section */}
+                  <div className="note-file-upload">
+                    <input
+                      type="file"
+                      id="note-file-input"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="file-input"
+                      disabled={isUploading}
+                    />
+                    <label
+                      htmlFor="note-file-input"
+                      className="file-upload-label"
+                    >
+                      <FiPaperclip className="upload-icon" />
+                      <span>Attach files (optional)</span>
+                    </label>
+                  </div>
+
+                  {/* Attachments Preview */}
+                  {noteAttachments.length > 0 && (
+                    <div className="attachments-preview">
+                      <h5>Attachments ({noteAttachments.length})</h5>
+                      {noteAttachments.map((file, index) => (
+                        <div key={index} className="attachment-preview-item">
+                          {getFileIcon(file)}
+                          <div className="file-preview-info">
+                            <span className="file-name">{file.name}</span>
+                            <span className="file-size">
+                              {formatFileSize(file.size)}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            className="remove-attachment-btn"
+                            onClick={() => removeAttachment(index)}
+                            disabled={isUploading}
+                          >
+                            <FiX size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <div className="add-note-actions">
                     <button
                       className="cancel-note-btn"
-                      onClick={() => setNewNote("")}
+                      onClick={() => {
+                        setNewNote("");
+                        setNoteAttachments([]);
+                      }}
+                      disabled={isUploading}
                     >
                       Cancel
                     </button>
-                    <button className="add-note-btn" onClick={handleAddNote}>
-                      Add Note
+                    <button
+                      className="add-note-btn"
+                      onClick={handleAddNote}
+                      disabled={
+                        isUploading ||
+                        (!newNote.trim() && noteAttachments.length === 0)
+                      }
+                    >
+                      {isUploading ? (
+                        <>
+                          <div className="spinner"></div>
+                          Adding...
+                        </>
+                      ) : (
+                        <>
+                          <FiSend className="send-icon" />
+                          Add Note
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
               </div>
-
-              {/* <div className="view-actions-details">
-                <button className="edit-btn" onClick={() => handleEditTicket(selectedTicket)}>
-                  Edit Ticket
-                </button>
-              </div> */}
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="no-ticket-selected">
+          <p>No ticket selected or ticket not found.</p>
         </div>
       )}
     </div>
