@@ -16,7 +16,7 @@ const FAQComponent = () => {
 }, [userdata]);
 
   // Sample data
-  const topics = ['All', 'Account', 'Billing', 'Software', 'Hardware', 'Network'];
+  // const topics = ['All', 'Account', 'Billing', 'Software', 'Hardware', 'Network'];
   
   const faqs = [
     {

@@ -193,6 +193,39 @@ const TicketManagement = () => {
     { id: 5, name: "resolved", value: "resolved" },
   ];
 
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const ticketsPerPage = 10;
+
+  // Calculate indexes
+  const indexOfLastTicket = currentPage * ticketsPerPage;
+  const indexOfFirstTicket = indexOfLastTicket - ticketsPerPage;
+  const currentTickets = filteredTickets.slice(indexOfFirstTicket, indexOfLastTicket);
+
+  // Number of pages
+  const totalPages = Math.ceil(filteredTickets.length / ticketsPerPage);
+
+
+  function useIsMobile() {
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return isMobile;
+  }
+  const isMobile = useIsMobile();
+  const wordLimit = isMobile ? 3 : 10;
+
+
+
+
+
+
   return (
     <div className="ticket-management">
       <div className="ticket-header">
@@ -588,59 +621,56 @@ const TicketManagement = () => {
               //   </div>
               // ))
 
-    <div class="contai">
+              <div class="contai">
 
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th>Ticket Type</th>
-                  <th>Updated date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-{
-              filteredTickets.map((ticket) => (
-        <tr key={ticket.id}>
-                  <td data-label="Description">{ticket.description}  </td>
-                  <td data-label="Status"> 
-                  <span className={`status-badge ${ ticket.status === 'open' ? 'active' : 'Open' } ${ ticket.status === 'In Progress' ? 'in-progress' : 'Open'} 
-                  ${ ticket.status === 'Resolved' ? 'resolved' : 'Open'} ${ ticket.status === 'closed' ? 'closed' : 'Open'} ${ ticket.status === 'cancelled' ? 'cancelled' : 'Open'} ${ ticket.status === 'proccessing' ? 'proccessing' : 'Open'} 
-                  ${ ticket.status === 'completed' ? 'completed' : 'Open'}  ${ ticket.status === 'on-hold' ? 'on-hold' : 'Open'}  ${ ticket.status === 'reopened' ? 'reopened' : 'Open'}  ${ ticket.status === 'escalated' ? 'escalated' : 'Open'}  
-                  ${ ticket.status === 'new' ? 'new' : 'Open'}  ${ ticket.status === 'assigned' ? 'assigned' : 'Open'}  ${ ticket.status === 'deferred' ? 'deferred' : 'Open'}  ${ ticket.status === 'waiting on customer' ? 'waiting-on-customer' : 'Open'}  
-                  ${ ticket.status === 'waiting on third party' ? 'waiting-on-third-party' : 'Open'}  ${ ticket.status === 'hold' ? 'hold' : 'Open'}  ${ ticket.status === 'pending' ? 'pending' : 'Open'}`}>
-                            { ticket.status === 'pending' ? 'pending' : 'Open'}
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>Ticket Type</th>
+                      <th>Updated date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentTickets.map((ticket) => (
+                      <tr key={ticket.id}>
+                        <td data-label="Description" style={{ textTransform: "capitalize" }}>
+                          {ticket.description
+                            ?.split(" ")
+                            .slice(0, wordLimit)
+                            .join(" ")}
+                          {ticket.description?.split(" ").length > wordLimit && " ..."}
+                        </td>
+                        <td data-label="Status">
+                          <span
+                            className={`status-badge 
+                    ${ticket.status === "open" ? "active" : ""}
+                    ${ticket.status === "In Progress" ? "in-progress" : ""}
+                    ${ticket.status === "Resolved" ? "resolved" : ""}
+                    ${ticket.status === "closed" ? "closed" : ""}
+                    
+                   
+                  `}
+                          >
+                            {ticket.status}
                           </span>
-                 
-                   </td>
-                  <td data-label="Ticket Type">{ticket.type}  </td>
-                  <td data-label="Updated Date">   {   moment(ticket.updated).format("lll")}  </td>
-                  
+                        </td>
+                        <td data-label="Ticket Type">{ticket.type}</td>
+                        <td data-label="Updated Date">{moment(ticket.updated).format("lll")}</td>
 
-                   <div className="p-4  btn-group-div">
-                   {/* <button
-                        className="action-btn edit-btn"
-                        onClick={() => handleEditTicket(ticket)}
-                      >
-                        Edit
-                      </button> */}
-                  <button
-                    className="action-btn view-btn"
-                  onClick={() => handleViewDetails(ticket)}
-                  >
-                    View Details
-                  </button>
-                   </div>
-                 
-                </tr>
+                        <div className="p-4 btn-group-div">
+                          <button className="action-btn view-btn" onClick={() => handleViewDetails(ticket)}>
+                            View Details
+                          </button>
+                        </div>
 
-              ) )
-}
-               
-             
-                 {/* <tr>
+                      </tr>
+                    ))}
+
+
+                    {/* <tr>
                   <td data-label="first-name">July</td>
                   <td data-label="last-name">Dooley</td>
                   <td data-label="email">july@example.com</td>
@@ -660,7 +690,7 @@ const TicketManagement = () => {
                    </div>
                  
                 </tr> */}
-                {/* <tr>
+                    {/* <tr>
                   <td data-label="first-name">July</td>
                   <td data-label="last-name">Dooley</td>
                   <td data-label="email">july@example.com</td>
@@ -680,15 +710,45 @@ const TicketManagement = () => {
                    </div>
                  
                 </tr> */}
-              </tbody>
-            </table>
-          </div>
+                  </tbody>
+                </table>
+                {/* Pagination controls */}
+                {filteredTickets.length > ticketsPerPage && (
+                  <div className="pagination">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage((prev) => prev - 1)}
+                    >
+                      Previous
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, index) => (
+                      <button
+                        key={index + 1}
+                        className={currentPage === index + 1 ? "active" : ""}
+                        onClick={() => setCurrentPage(index + 1)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    <button
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage((prev) => prev + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+
+
+              </div>
 
             )}
           </div>
 
 
-         
+
 
 
 

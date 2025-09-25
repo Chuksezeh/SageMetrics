@@ -9,6 +9,8 @@
 .btn-group-div {
   display: flex;
   gap: 0.5rem;
+  /* background-color: #059669 !important; */
+  width: 100%;
 }
 
 .ticket-header {
@@ -19,6 +21,7 @@
   padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
 }
+
 
 
 .ticket-header h1 {
@@ -731,6 +734,9 @@
   .ticket-management {
     margin-top: 10%;
     padding: 1rem;
+  }
+  .view-btn{
+    width: 100%;
   }
 
   .ticket-header {
