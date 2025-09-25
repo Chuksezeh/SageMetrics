@@ -9,21 +9,21 @@ const FAQComponent = () => {
   const [expandedQuestion, setExpandedQuestion] = useState(null);
 
   const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!userdata) {
-        navigate("/");
+      navigate("/");
     }
-}, [userdata]);
+  }, [userdata]);
 
   // Sample data
   // const topics = ['All', 'Account', 'Billing', 'Software', 'Hardware', 'Network'];
 
-  const{data, isPending, error}= useFetchData("generals/faqs");
+  const { data, isPending, error } = useFetchData("generals/faqs");
 
   console.log("data", data)
-  
+
   const faqs = [
     {
       id: 1,
@@ -77,7 +77,7 @@ const FAQComponent = () => {
 
   const filteredFAQs = activeTopic === 'All' ? data?.data : data?.data.filter(faq => faq.id == activeTopic);
 
-   
+
 
   const toggleQuestion = (id) => {
     setExpandedQuestion(expandedQuestion === id ? null : id);
@@ -91,29 +91,38 @@ const FAQComponent = () => {
         <h1>Frequently Asked Questions</h1>
         <p>Find answers to common questions about our products and services</p>
       </div>
-      
+
       <div className="trending-section">
         <h2>Trending FAQ's</h2>
         <div className="filter-container">
           <span>Filter by Topic:</span>
-          <select 
-            value={activeTopic} 
+          <select
+            value={activeTopic}
             onChange={(e) => setActiveTopic(e.target.value)}
             className="topic-filter"
           >
             <option value="All">All</option>
-            {faqs?.map(top => (
-              
-              <option key={top.id} value={top.id}>{top.topic}</option>
+            {data?.data?.map(top => (
+
+              <option key={top.id} value={top.id}>{top.title}</option>
             ))}
           </select>
         </div>
       </div>
-      
+
       <div className="faq-list">
+        {filteredFAQs?.length == 0 && !isPending &&
+          <div className="no-tickets">
+            <p>No  FAQ found.</p>
+          </div>}
+
+        {
+          isPending ? <div className="loader-div-Ticket"> <span className="loader"></span> </div> : null
+        }
+
         {filteredFAQs?.map(faq => (
           <div key={faq.id} className="faq-item">
-            <div 
+            <div
               className="faq-question"
               onClick={() => toggleQuestion(faq.id)}>
               <h3>{faq.question}</h3>
@@ -121,30 +130,32 @@ const FAQComponent = () => {
                 {expandedQuestion === faq.id ? '−' : '+'}
               </span>
             </div>
-            
+
             {expandedQuestion === faq.id && (
-       <div className="faq-answer">
-       <div className="faq-meta">
-         <span className="topic-badge">{faq.title}</span>
-        <span className="date">Updated: {moment(faq.createdAt).format("lll")}</span>
-       </div>
-    <p>{faq.shortDescription}</p>
-    {faq.hasMedia && (
-      <div className="media-notice">
-        {/* <span className="media-icon">🖼️</span> */}
-        This article contains helpful graphics and videos
-      </div>
-    )}
-    <Link
-      to={{
-        pathname: `/segametric-dashboard/faq-details/${faq.id}`,}}
-        state={{ faq }}
-      className="read-full-article-btn"
-    >
-      Read Full Article →
-    </Link>
-  </div>
-)}
+              <div className="faq-answer">
+                <div className="faq-meta">
+                  <span className="topic-badge">{faq.title}</span>
+                  <span className="date">Updated: {moment(faq.createdAt).format("lll")}</span>
+                </div>
+                <p>{faq.shortDescription}</p>
+                {faq.imageUrl || faq.videoUrl ? (
+                  <div className="media-notice">
+                    {/* <span className="media-icon">🖼️</span> */}
+                    This article contains helpful graphics and videos
+                  </div>
+                ) : (null)
+                }
+                <Link
+                  to={{
+                    pathname: `/segametric-dashboard/faq-details/${faq.id}`,
+                  }}
+                  state={{ faq }}
+                  className="read-full-article-btn"
+                >
+                  Read Full Article →
+                </Link>
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -429,13 +429,13 @@ const TicketManagement = () => {
             </button>
           </div>
                
-       {
-        pendingTicket ?   <div className="loader-div-Ticket"> <span className="loader"></span> </div>: null
-       }
+             {
+           pendingTicket ?   <div className="loader-div-Ticket"> <span className="loader"></span> </div>: null
+           }
         
 
           <div className="tickets-list">
-            {filteredTickets.length === 0 ? (
+            {filteredTickets.length === 0 && !pendingTicket ? (
               <div className="no-tickets">
                 <p>No {activeTab} tickets found.</p>
               </div>
