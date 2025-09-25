@@ -2,17 +2,40 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FiPaperclip, FiImage, FiX, FiSend } from "react-icons/fi";
 import "./TicketDetails.css";
+import { vitelWirelessSageMetrics } from "../../../Utilities/axios";
 
 const TicketDetails = () => {
-  const [selectedTicket, setSelectedTicket] = useState();
+  const [selectedTicket, setSelectedTicket] = useState(null);
   const [newNote, setNewNote] = useState("");
+  const [allTicketNote, setAllTicketNote] = useState([]);
   const [noteAttachments, setNoteAttachments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const userdata = JSON.parse(localStorage.getItem("SageData") || "{}");
   const location = useLocation();
+  let ticketId;
 
   useEffect(() => {
-    setSelectedTicket(location.state.ticket);
-  }, [location.state.ticket]);
+    if (location.state?.ticket) {
+      setSelectedTicket(location.state.ticket);
+      ticketId = location?.state?.ticket.id;
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    getTicketById();
+  }, []);
+
+  const getTicketById = async () => {
+    console.log("selectedState");
+    await vitelWirelessSageMetrics
+      .get(`generals/getTicketNotes/${ticketId}`)
+      .then((res) => {
+        console.log("ticket note by id", res.data.data);
+        setAllTicketNote(res.data.data);
+      });
+  };
+
+  console.log("selectedTicket", selectedTicket);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -25,31 +48,28 @@ const TicketDetails = () => {
   };
 
   const handleFileUpload = (event) => {
-    const files = Array.from(event.target.files);
-    const validFiles = files.filter((file) => {
-      const isValidType =
-        file.type.startsWith("image/") ||
-        file.type === "application/pdf" ||
-        file.type.startsWith("text/") ||
-        file.type.includes("document");
+    const file = event.target.files[0];
+    console.log("files of image", file);
 
-      const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
+    if (!file) return;
 
-      if (!isValidType) {
-        alert(`File type not supported: ${file.name}`);
-        return false;
-      }
+    // Validate file type - only images
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file (JPEG, PNG, GIF, etc.)");
+      event.target.value = "";
+      return;
+    }
 
-      if (!isValidSize) {
-        alert(`File too large: ${file.name} (Max 10MB)`);
-        return false;
-      }
+    // Validate file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image too large. Maximum size is 10MB.");
+      event.target.value = "";
+      return;
+    }
 
-      return true;
-    });
-
-    setNoteAttachments((prev) => [...prev, ...validFiles]);
-    event.target.value = ""; // Reset input
+    // Add new file to attachments array
+    setNoteAttachments((prev) => [...prev, file]);
+    event.target.value = "";
   };
 
   const removeAttachment = (index) => {
@@ -80,45 +100,31 @@ const TicketDetails = () => {
       const formData = new FormData();
       formData.append("noteText", newNote);
       formData.append("ticketId", selectedTicket.id);
-      formData.append("author", "Current User"); // Replace with actual user
+      formData.append("author", `${userdata?.firstName} ${userdata?.lastName}`);
+      formData.append("partnerId", userdata?.partnerId);
+      formData.append("role", "customer");
 
       // Append attachments
       noteAttachments.forEach((file) => {
-        formData.append("attachments", file);
+        formData.append("image", file);
       });
 
-      // Simulate API call - replace with actual backend call
-      const newNoteObj = {
-        id: `NOTE-${Date.now()}`,
-        date: new Date().toISOString(),
-        author: "Current User",
-        text: newNote,
-        attachments: noteAttachments.map((file) => ({
-          id: `ATT-${Date.now()}-${file.name}`,
-          filename: file.name,
-          type: file.type,
-          size: file.size,
-          url: URL.createObjectURL(file), // For preview - in real app, use backend URL
-        })),
-      };
-
-      const updatedTicket = {
-        ...selectedTicket,
-        notes: [...selectedTicket.notes, newNoteObj],
-      };
-
-      setSelectedTicket(updatedTicket);
-      setNewNote("");
-      setNoteAttachments([]);
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+      await vitelWirelessSageMetrics
+        .post("generals/addTicketNote", formData)
+        .then((res) => {
+          console.log("res", res.data);
+          getTicketById();
+          setNewNote("");
+          setNoteAttachments([]);
+        });
     } catch (error) {
       console.error("Error adding note:", error);
     } finally {
       setIsUploading(false);
     }
-  };
-
-  const isReply = (note, index, notes) => {
-    return index > 0 && notes[index - 1].author !== note.author;
   };
 
   const renderNoteAttachments = (attachments) => {
@@ -128,7 +134,7 @@ const TicketDetails = () => {
       <div className="note-attachments">
         {attachments.map((attachment, index) => (
           <div key={attachment.id || index} className="note-attachment-item">
-            {attachment.type.startsWith("image/") ? (
+            {attachment.type?.startsWith("image/") ? (
               <div className="note-image-attachment">
                 <img
                   src={attachment.url}
@@ -166,7 +172,7 @@ const TicketDetails = () => {
 
   return (
     <div>
-      {selectedTicket && (
+      {selectedTicket ? (
         <div className="ticket-detail-container">
           <div className="ticket-form-details">
             <div className="form-header">
@@ -259,14 +265,12 @@ const TicketDetails = () => {
               <div className="notes-section">
                 <h3>Notes & Comments</h3>
                 <div className="notes-thread">
-                  {selectedTicket?.notes?.length > 0 ? (
-                    selectedTicket.notes.map((note, index) => (
+                  {allTicketNote?.length > 0 ? (
+                    allTicketNote?.map((note, index) => (
                       <div
-                        key={note.id || index}
+                        key={note?.noteId || index}
                         className={`note-item ${
-                          isReply(note, index, selectedTicket.notes)
-                            ? "reply"
-                            : "admin-message"
+                          note.role === "customer" ? "reply" : "admin-message"
                         }`}
                       >
                         <div className="note-header">
@@ -302,8 +306,7 @@ const TicketDetails = () => {
                     <input
                       type="file"
                       id="note-file-input"
-                      multiple
-                      accept="image/*,.pdf,.doc,.docx,.txt"
+                      accept="image/*"
                       onChange={handleFileUpload}
                       className="file-input"
                       disabled={isUploading}
@@ -379,6 +382,10 @@ const TicketDetails = () => {
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="no-ticket-selected">
+          <p>No ticket selected or ticket not found.</p>
         </div>
       )}
     </div>

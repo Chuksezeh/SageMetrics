@@ -72,7 +72,7 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
           .then((res) => {
             console.log("res ==>", res);
             setIsUploading(false);
-            navigate("/segametric-inside/manage-ticket");
+            navigate("/segametric-dashboard/manage-ticket");
             // navigator('/manage-ticket')
             alert("New ticket created successfully!");
             resetForm();
