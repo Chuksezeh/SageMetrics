@@ -1,41 +1,43 @@
 import React, { useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import "./FAQDetails.css";
 
 const FAQDetails = () => {
   const { id } = useParams();
 
   const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { content } = location.state;
 
   useEffect(() => {
     if (!userdata) {
-        navigate("/");
+      navigate("/");
     }
-}, [userdata]);
+  }, [userdata]);
 
-console.log("FAQ ID from URL:", id);
+  console.log("FAQ ID from URL:", id);
 
- const scrolltop = () => {
+  const scrolltop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
   useEffect(() => {
     scrolltop();
   }, []);
 
-
   // Sample data - in a real app, this would come from an API
-  const faqArticle = [ 
+  const faqArticle = [
     {
-    id: 1,
-    title: "How do I reset my password?",
-    category: "Account",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
+      id: 1,
+      title: "How do I reset my password?",
+      category: "Account",
+      lastUpdated: "October 15, 2023",
+      readTime: "5 min read",
+      content: `
       <p>To reset your password, go to the login page and click "Forgot Password". Enter your email address and follow the instructions sent to your inbox.',</p>
       
       <h3>Steps to reset your password:</h3>
@@ -79,26 +81,26 @@ console.log("FAQ ID from URL:", id);
       <h3>Need additional help?</h3>
       <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
     `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
+      relatedFaqs: [
+        { id: 2, title: "How to change account email address" },
+        { id: 3, title: "Two-factor authentication setup guide" },
+        { id: 4, title: "How to recover a locked account" },
+      ],
+      helpful: true, // Whether the article was helpful
+      author: {
+        name: "Sarah Johnson",
+        role: "Security Specialist",
+        avatar: "SJ",
+      },
     },
-  },
 
-   {
-    id: 2,
-    title: "How do I become a partner?",
-    category: "Becoming a Partner",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
+    {
+      id: 2,
+      title: "How do I become a partner?",
+      category: "Becoming a Partner",
+      lastUpdated: "October 15, 2023",
+      readTime: "5 min read",
+      content: `
       <p>To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.</p>
       
       <h3>How to become a partner:</h3>
@@ -142,26 +144,26 @@ console.log("FAQ ID from URL:", id);
       <h3>Need additional help?</h3>
       <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
     `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
+      relatedFaqs: [
+        { id: 2, title: "How to change account email address" },
+        { id: 3, title: "Two-factor authentication setup guide" },
+        { id: 4, title: "How to recover a locked account" },
+      ],
+      helpful: true, // Whether the article was helpful
+      author: {
+        name: "Sarah Johnson",
+        role: "Security Specialist",
+        avatar: "SJ",
+      },
     },
-  },
 
-   {
-    id: 3,
-    title: "How do I sell sim as a partner?",
-    category: "Selling Sim",
-    lastUpdated: "October 15, 2023",
-    readTime: "5 min read",
-    content: `
+    {
+      id: 3,
+      title: "How do I sell sim as a partner?",
+      category: "Selling Sim",
+      lastUpdated: "October 15, 2023",
+      readTime: "5 min read",
+      content: `
       <p>To sell vitel wireless sim as a partner, you need to download and install a the required applications: Vitel Partner App, Vitel Agent App and Vitel KYC App.</p>
       
       <h3>Steps to reset your password:</h3>
@@ -205,30 +207,25 @@ console.log("FAQ ID from URL:", id);
       <h3>Need additional help?</h3>
       <p>If you're still having trouble resetting your password, please contact our support team. Have your account information ready to verify your identity.</p>
     `,
-    relatedFaqs: [
-      { id: 2, title: "How to change account email address" },
-      { id: 3, title: "Two-factor authentication setup guide" },
-      { id: 4, title: "How to recover a locked account" },
-    ],
-    helpful: true, // Whether the article was helpful
-    author: {
-      name: "Sarah Johnson",
-      role: "Security Specialist",
-      avatar: "SJ",
+      relatedFaqs: [
+        { id: 2, title: "How to change account email address" },
+        { id: 3, title: "Two-factor authentication setup guide" },
+        { id: 4, title: "How to recover a locked account" },
+      ],
+      helpful: true, // Whether the article was helpful
+      author: {
+        name: "Sarah Johnson",
+        role: "Security Specialist",
+        avatar: "SJ",
+      },
     },
-  },
+  ];
 
-];
+  // const faqArticles = faqArticle.filter((faq) => faq.id == id);
 
+  // const objDetails = { ...faqArticles };
 
-const faqArticles = faqArticle.filter(faq => faq.id == id);
-
-
-const objDetails = { ...faqArticles };
-
-console.log("faqArticles>>", objDetails)
-
-
+  // console.log("faqArticles>>", objDetails);
 
   return (
     <div className="faq-details-container">
@@ -243,7 +240,7 @@ console.log("faqArticles>>", objDetails)
 
       {/* Article Header */}
       <div className="article-header">
-        <h1 className="article-title">{objDetails[0]?.title}</h1>
+        <h1 className="article-title">{content?.title}</h1>
         {/* <div className="article-author">
           <div className="author-avatar">{faqArticle.author.avatar}</div>
           <div className="author-info">
@@ -256,7 +253,7 @@ console.log("faqArticles>>", objDetails)
       {/* Article Content */}
       <article
         className="article-content"
-        dangerouslySetInnerHTML={{ __html: objDetails[0]?.content }}
+        dangerouslySetInnerHTML={{ __html: content?.content }}
       />
 
       {/* Helpfulness Rating */}
@@ -273,7 +270,7 @@ console.log("faqArticles>>", objDetails)
       </form> */}
 
       {/* Related Articles */}
-      <div className="related-articles">
+      {/* <div className="related-articles">
         <h2>Related Articles</h2>
         <ul className="related-list">
           {faqArticle?.relatedFaqs?.map((faq) => (
@@ -284,7 +281,7 @@ console.log("faqArticles>>", objDetails)
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
 
       {/* Back to FAQ List */}
       <div className="back-to-faq">
