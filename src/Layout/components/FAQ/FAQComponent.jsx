@@ -32,7 +32,7 @@ const FAQComponent = () => {
       question: 'How do I become a partner?',
       topic: 'Becoming a Partner',
       date: '2023-10-12',
-     shortContent: 'To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.',
+      shortContent: 'To become a partner, visit our Partners page and fill out the application form. Our team will review your application and get back to you within 5-7 business days.',
       hasMedia: false
     },
     {
