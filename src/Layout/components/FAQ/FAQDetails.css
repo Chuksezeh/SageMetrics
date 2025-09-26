@@ -380,6 +380,15 @@
   margin: 0 auto;
 }
 
+  .video-section {
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .article-video {
+    height: 450px;
+  }
+
 /* Media error states */
 .media-error {
   text-align: center;
