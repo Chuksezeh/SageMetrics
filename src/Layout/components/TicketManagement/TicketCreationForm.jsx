@@ -26,10 +26,9 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
     subscriber: Yup.string()
       .required("Subscriber number is required")
       .matches(
-        /^[0-9-]+$/,
-        "Subscriber number must contain only numbers and hyphens"
-      )
-      .min(5, "Subscriber number must be at least 5 characters"),
+        /^(0\d{10}|234\d{10})$/,
+        "Subscriber number must be a valid Nigerian phone number"
+      ),
     category: Yup.string().required("Category is required"),
     type: Yup.string().required("Issue type is required"),
     description: Yup.string()
@@ -62,22 +61,40 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
           formData.append(key, values[key]);
         });
 
+        let subscriber = values.subscriber.trim();
+
+        // Case 1: starts with "0" → replace with "234"
+        if (subscriber.startsWith("0")) {
+          subscriber = "234" + subscriber.slice(1);
+        }
+        // Case 2: starts with "2340" → remove the extra "0"
+        else if (subscriber.startsWith("2340")) {
+          subscriber = "234" + subscriber.slice(4);
+        }
+
+        const formattedValues = {
+          ...values,
+          subscriber,
+        };
+
+        console.log("Submitting:", formattedValues);
+
         // Append single image if selected
         if (selectedImage) {
           formData.append("image", selectedImage);
         }
 
-        vitelWirelessSageMetrics
-          .post("generals/createTicketMgt", formData)
-          .then((res) => {
-            console.log("res ==>", res);
-            setIsUploading(false);
-            navigate("/segametric-dashboard/manage-ticket");
-            // navigator('/manage-ticket')
-            alert("New ticket created successfully!");
-            resetForm();
-            setSelectedImage(null);
-          });
+        // vitelWirelessSageMetrics
+        //   .post("generals/createTicketMgt", formData)
+        //   .then((res) => {
+        //     console.log("res ==>", res);
+        //     setIsUploading(false);
+        //     navigate("/segametric-dashboard/manage-ticket");
+        //     // navigator('/manage-ticket')
+        //     alert("New ticket created successfully!");
+        //     resetForm();
+        //     setSelectedImage(null);
+        //   });
       } catch (error) {
         console.error("Error creating ticket:", error);
       } finally {
@@ -171,7 +188,7 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
                 id="subscriber"
                 name="subscriber"
                 type="text"
-                placeholder="e.g., 071209000103"
+                placeholder="e.g., 23471209000103"
                 className={`form-input ${
                   formik.touched.subscriber && formik.errors.subscriber
                     ? "error"

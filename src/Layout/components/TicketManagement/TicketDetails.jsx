@@ -10,6 +10,7 @@ const TicketDetails = () => {
   const [allTicketNote, setAllTicketNote] = useState([]);
   const [noteAttachments, setNoteAttachments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const userdata = JSON.parse(localStorage.getItem("SageData") || "{}");
   const location = useLocation();
   let ticketId;
@@ -27,11 +28,14 @@ const TicketDetails = () => {
 
   const getTicketById = async () => {
     console.log("selectedState");
+    setLoading(true);
+    ticketId = location?.state?.ticket.id;
     await vitelWirelessSageMetrics
       .get(`generals/getTicketNotes/${ticketId}`)
       .then((res) => {
         console.log("ticket note by id", res.data.data);
         setAllTicketNote(res.data.data);
+        setLoading(false);
       });
   };
 
@@ -232,30 +236,27 @@ const TicketDetails = () => {
                   <p>{selectedTicket.description}</p>
 
                   {/* Display ticket attachments if any */}
-                  {selectedTicket.attachments &&
-                    selectedTicket.attachments.filter((att) =>
-                      att.type?.startsWith("image/")
-                    ).length > 0 && (
+                  {selectedTicket?.imageUrl &&
+                    selectedTicket.imageUrl.trim() !== "" && (
                       <div className="description-images">
                         <h4>Attached Images</h4>
                         <div className="image-grid">
-                          {selectedTicket.attachments
-                            .filter((att) => att.type?.startsWith("image/"))
-                            .map((image, index) => (
-                              <div
-                                key={image.id || index}
-                                className="image-item"
-                              >
+                          {selectedTicket?.imageUrl &&
+                            selectedTicket.imageUrl.trim() !== "" && (
+                              <div className="image-item">
                                 <img
-                                  src={image.url}
-                                  alt={image.filename}
-                                  className="description-image"
+                                  src={selectedTicket.imageUrl}
+                                  alt="note attachment"
+                                  className="note-image"
                                 />
-                                <span className="image-filename">
-                                  {image.filename}
-                                </span>
                               </div>
-                            ))}
+                            )}
+
+                          {/* <img
+                          src={selectedTicket?.ticketImage}
+                          alt="imaghe file"
+                          className="description-image"
+                        /> */}
                         </div>
                       </div>
                     )}
@@ -264,32 +265,43 @@ const TicketDetails = () => {
 
               <div className="notes-section">
                 <h3>Notes & Comments</h3>
-                <div className="notes-thread">
-                  {allTicketNote?.length > 0 ? (
-                    allTicketNote?.map((note, index) => (
-                      <div
-                        key={note?.noteId || index}
-                        className={`note-item ${
-                          note.role === "customer" ? "reply" : "admin-message"
-                        }`}
-                      >
-                        <div className="note-header">
-                          <span className="note-author">{note.author}</span>
-                          <span className="note-date">
-                            {formatDate(note.date)}
-                          </span>
-                        </div>
-                        <p className="note-text">{note.text}</p>
+                {loading ? (
+                  <div className="loading-container">
+                    <div className="spinner"></div>
+                    <p>Loading comments...</p>
+                  </div>
+                ) : (
+                  <div className="notes-thread">
+                    {allTicketNote?.length > 0 ? (
+                      allTicketNote?.map((note, index) => (
+                        <div
+                          key={note?.noteId || index}
+                          className={`note-item ${
+                            note.role === "customer" ? "reply" : "admin-message"
+                          }`}
+                        >
+                          <div className="note-header">
+                            <span className="note-author">{note.author}</span>
+                            <span className="note-date">
+                              {formatDate(note.date)}
+                            </span>
+                          </div>
+                          <p className="note-text">{note.text}</p>
 
-                        {/* Display note attachments */}
-                        {/* {renderNoteAttachments(note.attachments)} */}
-                        <img src={note?.imageUrl} className="note-image" />
-                      </div>
-                    ))
-                  ) : (
-                    <p className="no-notes">No notes available</p>
-                  )}
-                </div>
+                          {note?.imageUrl && note.imageUrl.trim() !== "" && (
+                            <img
+                              src={note.imageUrl}
+                              alt="note attachment"
+                              className="note-image"
+                            />
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="no-notes">No notes available</p>
+                    )}
+                  </div>
+                )}
 
                 {/* Add Note Form */}
                 <div className="add-note-form">

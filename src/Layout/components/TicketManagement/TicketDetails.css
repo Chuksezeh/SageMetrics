@@ -584,6 +584,10 @@
   animation: spin 1s linear infinite;
 }
 
+.image-grid {
+  height: 450px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -599,103 +603,103 @@
     padding: 0;
     align-items: stretch;
   }
-  
+
   .ticket-form-details {
     border-radius: 0;
     padding: 1rem;
     min-height: 100vh;
     max-width: 100%;
   }
-  
+
   .description-section,
   .notes-section {
     margin-bottom: 1rem;
     padding: 1rem;
     border-radius: 0.5rem;
   }
-  
+
   .description-content {
     padding: 1rem;
   }
-  
+
   .details-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
     padding: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .note-item {
     padding: 1rem;
     width: 100% !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-  
+
   .note-item.reply::before {
     display: none;
   }
-  
+
   .note-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .add-note-form {
     padding: 1rem;
     margin-top: 1.5rem;
   }
-  
+
   .add-note-actions {
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .add-note-btn,
   .cancel-note-btn {
     width: 100%;
     padding: 1rem;
   }
-  
+
   .view-actions-details {
     padding: 1rem;
     justify-content: center;
   }
-  
+
   .view-actions-details .edit-btn {
     width: 100%;
     padding: 1rem;
   }
-  
+
   .note-image {
     width: 100%;
     height: auto;
     max-height: 200px;
   }
-  
+
   .note-image-attachment {
     display: block;
     margin-right: 0;
     margin-bottom: 1rem;
   }
-  
+
   .note-file-attachment {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .file-info {
     min-width: auto;
     width: 100%;
   }
-  
+
   .download-link {
     align-self: stretch;
     text-align: center;
     margin-top: 0.5rem;
   }
-  
+
   .file-upload-label {
     padding: 1rem;
     font-size: 1rem;
@@ -707,29 +711,29 @@
   .ticket-form-details {
     padding: 0.5rem;
   }
-  
+
   .description-section,
   .notes-section {
     padding: 0.75rem;
   }
-  
+
   .description-content {
     padding: 0.75rem;
   }
-  
+
   .details-grid {
     padding: 0.75rem;
     gap: 0.5rem;
   }
-  
+
   .note-item {
     padding: 0.75rem;
   }
-  
+
   .add-note-form {
     padding: 0.75rem;
   }
-  
+
   .note-textarea {
     padding: 0.75rem;
   }
@@ -740,20 +744,20 @@
   .ticket-detail-container {
     padding: 0.5rem;
   }
-  
+
   .ticket-form-details {
     padding: 1.5rem;
   }
-  
+
   .details-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .note-item.reply {
     margin-left: 5%;
     width: 95%;
   }
-  
+
   .note-item.admin-message {
     width: 95%;
     margin-right: 5%;
