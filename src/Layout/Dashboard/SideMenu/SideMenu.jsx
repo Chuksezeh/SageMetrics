@@ -1,22 +1,37 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./SideMenu.css";
 
-const SideMenu = ({ sidebarOpen, setSidebarOpen, handleLogout }) => {
+const SideMenu = ({ sidebarOpen, setSidebarOpen }) => {
+
+    // const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
+
+  const navigate = useNavigate();
+
+
   const menuItems = [
     {
-      path: "/segametric-inside/manage-ticket",
+      path: "/segametric-dashboard/manage-ticket",
       label: "Manage Ticket",
     },
-    {
-      path: "/segametric-inside/learn-how-to",
-      label: "Learn How To",
-    },
-    {
-      path: "/segametric-inside/trending-faq",
+     {
+      path: "/segametric-dashboard/trending-faq",
       label: "Trending FAQ",
     },
+    {
+      path: "/segametric-dashboard/learn-how-to",
+      label: "Learn How To",
+    },
+   
   ];
+
+ 
+ const handleLogout = () => {
+    console.log("Logging out...");
+    localStorage.removeItem("SageData");
+    navigate("/")
+  };
+  
 
   return (
     <>

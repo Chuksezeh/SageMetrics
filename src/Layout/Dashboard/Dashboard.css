@@ -31,6 +31,11 @@
   height: 100vh;
   background-color: #f9fafb;
 }
+.header-left-contain{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
 
 .main-content {
   flex: 1;

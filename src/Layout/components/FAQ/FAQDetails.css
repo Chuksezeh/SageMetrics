@@ -64,6 +64,7 @@
   font-size: 2.25rem;
   font-weight: 700;
   color: white;
+  padding: 5px;
   margin-bottom: 1.5rem;
   line-height: 1.2;
 }
@@ -306,6 +307,209 @@
 
 .back-link:hover {
   text-decoration: underline;
+}
+
+/* FAQDetails.css - Updated with Media Styles */
+
+/* ... existing styles ... */
+
+/* Media Sections */
+.media-section {
+  margin: 2rem 0;
+}
+
+.media-container {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.article-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-image:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.article-video {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #000;
+}
+
+.video-container h3 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.media-caption {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Image specific styles */
+.image-section .media-container {
+  max-width: 100%;
+}
+
+/* Video specific styles */
+.video-section {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2.5rem 0;
+}
+
+.video-section .video-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+  .video-section {
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .article-video {
+    height: 450px;
+  }
+
+/* Media error states */
+.media-error {
+  text-align: center;
+  padding: 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  margin: 1rem 0;
+}
+
+.media-error p {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Article summary */
+.article-summary {
+  background-color: #f0f9ff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #0ea5e9;
+  margin: 1.5rem 0;
+}
+
+.article-summary p {
+  margin: 0;
+  color: #0369a1;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Responsive media styles */
+@media (max-width: 768px) {
+  .article-image {
+    max-width: 100%;
+    border-radius: 6px;
+  }
+
+  .article-video {
+    max-width: 100%;
+    border-radius: 6px;
+  }
+
+  .video-section {
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .video-container h3 {
+    font-size: 1.1rem;
+  }
+
+  .article-summary {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .article-summary p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-section {
+    padding: 1rem;
+  }
+
+  .media-caption {
+    font-size: 0.8rem;
+  }
+
+  .article-summary {
+    padding: 0.75rem;
+  }
+}
+
+/* Loading animation for media */
+@keyframes mediaLoading {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.article-image,
+.article-video {
+  animation: mediaLoading 0.5s ease-in-out;
+}
+
+/* Focus styles for accessibility */
+.article-video:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.helpful-btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .article-video {
+    display: none;
+  }
+
+  .article-image {
+    max-width: 80%;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .helpful-section {
+    display: none;
+  }
 }
 
 /* Responsive Design */

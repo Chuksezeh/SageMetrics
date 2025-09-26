@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LearnHowTo.css";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const LearnHowTo = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -95,7 +96,7 @@ const navigate = useNavigate();
           <div className="step-content">
             <h2>Select a Category</h2>
             <p>Choose the category that best matches what you need help with</p>
-            <div className="category-grid">
+            {/* <div className="category-grid">
               {categories.map((category) => (
                 <div
                   key={category.id}
@@ -104,13 +105,29 @@ const navigate = useNavigate();
                   }`}
                   onClick={() => setSelectedCategory(category.id)}
                 >
-                  {/* <div className="category-icon">
-                    {getCategoryIcon(category.id)}
-                  </div> */}
+                 
                   <h3>{category.name}</h3>
+                </div> */}
+
+              <div className="topics-list">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  className={`topic-item ${
+                    selectedCategory === category.id ? "selected" : ""
+                  }`}
+                   onClick={() => setSelectedCategory(category.id)}
+                >
+                  <span className="topic-bullet">•</span>
+                  <span className="topic-name">{category.name}</span>
                 </div>
               ))}
             </div>
+
+
+
+              {/* ))}
+            </div> */}
           </div>
         );
 
@@ -128,8 +145,14 @@ const navigate = useNavigate();
                   }`}
                   onClick={() => setSelectedTopic(topic.id)}
                 >
+                 
                   <span className="topic-bullet">•</span>
-                  <span className="topic-name">{topic.name}</span>
+                  <span className="topic-name">{topic.name} </span>
+                   
+                  {/* <div>   <MdOutlineKeyboardArrowRight /></div> */}
+                     
+                
+                  
                 </div>
               ))}
             </div>
