@@ -84,17 +84,17 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
           formData.append("image", selectedImage);
         }
 
-        // vitelWirelessSageMetrics
-        //   .post("generals/createTicketMgt", formData)
-        //   .then((res) => {
-        //     console.log("res ==>", res);
-        //     setIsUploading(false);
-        //     navigate("/segametric-dashboard/manage-ticket");
-        //     // navigator('/manage-ticket')
-        //     alert("New ticket created successfully!");
-        //     resetForm();
-        //     setSelectedImage(null);
-        //   });
+        vitelWirelessSageMetrics
+          .post("generals/createTicketMgt", formData)
+          .then((res) => {
+            console.log("res ==>", res);
+            setIsUploading(false);
+            navigate("/segametric-dashboard/manage-ticket");
+            // navigator('/manage-ticket')
+            alert("New ticket created successfully!");
+            resetForm();
+            setSelectedImage(null);
+          });
       } catch (error) {
         console.error("Error creating ticket:", error);
       } finally {
