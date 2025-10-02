@@ -39,7 +39,27 @@ const TicketDetails = () => {
       });
   };
 
-  console.log("selectedTicket", selectedTicket);
+  useEffect(() => {
+    getTicketByIdAuto();
+
+    const interval = setInterval(getTicketByIdAuto, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getTicketByIdAuto = async () => {
+    console.log("selectedState");
+
+    ticketId = location?.state?.ticket.id;
+    await vitelWirelessSageMetrics
+      .get(`generals/getTicketNotes/${ticketId}`)
+      .then((res) => {
+        console.log("ticket note by id checking", res.data.data);
+        setAllTicketNote(res.data.data);
+      });
+  };
+
+  // console.log("selectedTicket", selectedTicket);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
