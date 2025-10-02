@@ -107,17 +107,17 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                  </div>
-                                   <div className="column d-block inpulControl p-3 d-flex   h-100">
+                                   <div className="column d-block inpulControl p-3 d-flex   ">
                                      <div className="content-form ">
                                     <div className="form-wrapper py-4">
                                         <h2 className="mb-4">Login</h2>
                                         <form action="" onSubmit={handleSubmit((data, event) => {
                                             handleLoginPartner(data);
-                                        })}>
-                                            <div className="form-input con-input-div mb-3 p-0">
+                                        })} className="inpuTForm">
+                                            <div className=" con-input-div mb-3 p-0">
                                                 <label
 
-                                                    className="text-secondary label-margin"
+                                                    className="text-secondary label-margin p-2"
                                                 >
                                                     Email Address
                                                 </label>
@@ -147,10 +147,10 @@ const HomePage = () => {
                                                 </div>
                                                 <small className="email-error-feedback error-feedback text-danger text-small"></small>
                                             </div>
-                                            <div className="form-input con-input-div mb-3 p-0">
+                                            <div className=" con-input-div mb-3 p-0">
                                                 <label
 
-                                                    className="text-secondary label-margin"
+                                                    className="text-secondary label-margin p-2"
                                                 >
                                                     Password
                                                 </label>

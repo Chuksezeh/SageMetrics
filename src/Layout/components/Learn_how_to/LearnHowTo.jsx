@@ -30,8 +30,10 @@ const navigate = useNavigate();
   const topics = {
     sim: [
       { id: "vend-sim", name: "How to vend a SIM card" },
+       { id: "sell-sim", name: "How to sell a SIM card" },
       { id: "activate-sim", name: "How to activate a SIM card" },
-      { id: "replace-sim", name: "How to replace a SIM card" },
+      { id: "replace-sim", name: "How to replace a SIM card/welcome pack" },
+      { id: "number-porting", name: "How to port a number" },
     ],
     device: [
       { id: "setup-phone", name: "How to set up a new phone" },
@@ -68,6 +70,104 @@ const navigate = useNavigate();
         "Record the transaction in the system for tracking",
       ],
     },
+    "sell-sim": {
+      title: "How to sell a SIM card",
+      steps: [
+        "Log into vitel wireless partner app",
+        "Click on sell sim",
+         
+          "Select sim type",
+          "Select category",
+           "Select serial number",
+           "Select MSISDN",
+           "Click on purchase",
+           "Top up airtime 'optional'",
+           "Top up data 'optional'",
+           "Click on proceed to make payment",
+           "On success, proceed to sim activation",
+           
+      ],
+      tips: [
+         "Take note of the customer code on the receipt",
+         "The customer code will be used for sim activation",
+        "Keep SIM cards secure when not in use",
+        "Record the transaction in the system for tracking",
+      ],
+    },
+    "activate-sim": {
+      title: "How to activate a SIM card",
+      steps: [
+        "Log into vitel wireless KYC app",
+        "Click on the icon on the left top corner of your screen",
+        "Click on New Verification",
+        "Enter your NIN number for authentication",
+         "Enter your NIN number for authentication",
+         "Position your head on the circle to take a shut",
+         "Start capture, if turned green, capture image ",
+         "Submit for NIN verification ",
+         "On success proceed to sim activation ",
+         
+         
+           
+      ],
+      tips: [
+        "Keep SIM cards secure when not in use",
+        "Record the transaction in the system for tracking",
+      ],
+    },
+     "replace-sim": {
+      title: "How to replace a SIM card/welcome pack",
+      steps: [
+        "Log into vitel wireless partner app",
+        "Click on the icon on the left top corner of your screen",
+        "Click on Welcome Pack",
+        "Click on Add New",
+         "Fill the form ",
+         "Capture customer image, for NIN verification",
+          "On success select sim type",
+          "Select category",
+          "Select serial number ",
+           "Click on purchase",
+           "Top up airtime 'optional'",
+           "Top up data 'optional'",
+           "Click on proceed to make payment",
+           "On success click on eye icon ",
+           "Click on Process to begin processing of your welcome pack",
+            "Once done, the status will change to 'Completed' "
+
+
+       
+],
+      tips: [
+        "Keep SIM cards secure when not in use",
+        "Record the transaction in the system for tracking",
+      ],
+    },
+     "number-porting": {
+      title: "How to port a number",
+      steps: [
+        "Log into vitel wireless partner app",
+        "Click on the icon on the left top corner of your screen",
+        "Click on Number Porting",
+        "Click on Add New",
+         "Fill the form ",
+         "Wait for approval, if approved",
+          // "Select category",
+          // "Select serial number ",
+          //  "Click on purchase",
+          //  "Top up airtime 'optional'",
+          //  "Top up data 'optional'",
+          //  "Click on proceed to make payment",
+          //  "On success click on eye icon ",
+           "Click on Process to begin processing of your welcome pack",
+            "Once done, the status will change to 'Completed' "
+        ],
+
+      tips: [
+        "Keep SIM cards secure when not in use",
+        "Record the transaction in the system for tracking",
+      ],
+    },
   };
 
   const handleCategoryChange = (e) => {
@@ -88,6 +188,8 @@ const navigate = useNavigate();
     setSelectedTopic("");
     setCurrentStep(1);
   };
+
+ 
 
   const renderStep = () => {
     switch (currentStep) {
@@ -250,7 +352,7 @@ const navigate = useNavigate();
                   If you're still having trouble, contact our support team for
                   assistance.
                 </p>
-                <button className="support-button">Contact Support</button>
+               <a href="https://www.vitelwireless.com/vitel-wireless-support"  target="_blank"> <button className="support-button" >Contact Support</button></a> 
               </div>
             </div>
           </div>
