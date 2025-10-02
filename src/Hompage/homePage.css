@@ -40,9 +40,14 @@
 }
 .con-input-div{
     width: 100% !important;
+    
+}
+.inpuTForm{
+/* background-color: #198754; */
+width: 100% !important;
 }
 .inpulControl{
-     /* background-color: #dc3545;  */
+     /* background-color: #dc3545;   */
     margin: 0 auto !important;
     justify-content: center;
     margin-top: 5% !important;
