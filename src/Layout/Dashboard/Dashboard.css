@@ -31,7 +31,7 @@
   height: 100vh;
   background-color: #f9fafb;
 }
-.header-left-contain{
+.header-left-contain {
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -53,6 +53,8 @@
 
 @media (max-width: 768px) {
   .content-area {
-    padding: 1rem;
+    /* padding: 1rem; */
+    padding: 0;
+    padding-top: 1rem;
   }
 }

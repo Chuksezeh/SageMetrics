@@ -606,7 +606,7 @@
 
   .ticket-form-details {
     border-radius: 0;
-    padding: 1rem;
+    /* padding: 1rem; */
     min-height: 100vh;
     max-width: 100%;
   }

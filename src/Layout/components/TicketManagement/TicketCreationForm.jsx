@@ -168,14 +168,6 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
       <div className="ticket-creation-form">
         <div className="form-header">
           <h2>Create New Support Ticket</h2>
-          <button
-            type="button"
-            className="close-btn"
-            onClick={onClose}
-            disabled={formik.isSubmitting}
-          >
-            <FiX size={20} />
-          </button>
         </div>
 
         <form onSubmit={formik.handleSubmit}>
