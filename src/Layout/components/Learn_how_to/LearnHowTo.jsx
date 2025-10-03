@@ -41,7 +41,7 @@ const navigate = useNavigate();
     ],
     billing: [
       { id: "payment-options", name: "Payment options" },
-      { id: "reading-bill", name: "Understanding your bill" },
+      // { id: "reading-bill", name: "Understanding your bill" },
     ],
     network: [
       { id: "signal-issues", name: "Fixing signal issues" },
@@ -143,7 +143,9 @@ const navigate = useNavigate();
         "Record the transaction in the system for tracking",
       ],
     },
-     "number-porting": {
+     
+    
+    "number-porting": {
       title: "How to port a number",
       steps: [
         "Log into vitel wireless partner app",
@@ -168,6 +170,114 @@ const navigate = useNavigate();
         "Record the transaction in the system for tracking",
       ],
     },
+
+     "setup-phone": {
+      title: "How to set up a new phone",
+        
+      steps: [
+        "Locate the SIM tray, usually on the side of the phone, using a SIM ejector tool or paperclip to open the small hole. ",
+        "Place the SIM card onto the tray, matching the cut corner to the tray's outline. ",
+        "Gently reinsert the SIM tray into the phone until it snaps into place. ",
+        "The phone will automatically detect the new SIM card. ",
+        
+        ],
+
+      tips: [
+        "If you have issues with SIM recognition, ensure it's inserted correctly and restart your phone. ",
+        "If activation fails, contact customer support.",
+        "You may need to update your phone's software to support the SIM card. "
+        ,
+      ],
+    },
+
+     "troubleshoot-device": {
+      title: "Device troubleshooting",
+        
+      steps: [
+        "Check the SIM card's placement: Ensure the SIM is correctly seated in the SIM tray and properly aligned with the phone's SIM slot.  ",
+        "Remove and reinsert the SIM: Take the SIM card out and reinsert it into the tray.  ",
+        "Inspect the SIM card: Look for scratches on the gold contacts, which can cause connectivity problems.  ",
+        "Clean the SIM contacts: Gently wipe the gold contact points on the SIM card with a soft, dry cloth or cotton swab.  ",
+        "Toggle Airplane Mode: Turn airplane mode on for a few seconds, then turn it off to reset network connections. ",
+        "Restart your phone: A simple restart can resolve temporary glitches and prompt the device to detect the new SIM. ",
+        "Test the SIM in another device: Try the SIM card in a different phone to determine if the issue is with the SIM itself or your device. "
+        
+        ],
+
+      tips: [
+        "Check for phone updates: Outdated device software can cause compatibility problems; ensure your phone's operating system is up-to-date. ",
+       
+        ,
+      ],
+    },
+
+"payment-options": {
+      title: "Payment options",
+      steps: [
+        "Sim Purchase = Card, Wallet, Bank Transfer, USSD",
+        "Airtime Top-up = Card, Wallet, Bank Transfer, USSD",
+        "Data Top-up = Card, Wallet, Bank Transfer, USSD, Airtime Balance",
+         "X-phone Top-up = Card, Wallet, Bank Transfer, USSD, Airtime Balance",
+         "Wallet Top-up = Card, Bank Transfer, USSD ",
+         "Device Purchase = Card, Bank Transfer,USSD, Pay on Delivery",
+         "IOT = Card, Bank Transfer, USSD",
+         "VAS = Card, Bank Transfer, USSD",
+
+
+         
+
+
+       
+],
+      tips: [
+
+       "Buy Airtime → Select amount → Choose “Pay with Wallet” or “Pay with Card”.",
+       "Buy Data → Select amount → Choose “Pay with Wallet”, “Pay with Card” or “Pay with Airtime Balance”.",
+       "Top-up Wallet → Choose “Bank Transfer (Virtual Account)” or Card.",
+       "Buy Device → Choose “Pay with Card”, “Pay on Delivery”.",
+      ],
+    },
+
+     "signal-issues": {
+      title: "Fixing signal issues",
+      steps: [
+        "Check for coverage: Move to a different location, preferably outdoors, to see if signal strength improves. ",
+        "Restart your phone: A simple reboot can often resolve temporary software glitches affecting your network connection. ",
+        "Toggle Airplane Mode: Turn Airplane Mode on for a few seconds, then turn it off to force your device to find the best available signal. ",
+        "Remove accessories: Take off any phone cases or accessories, as some can interfere with your phone's antenna. ",
+         "Manually select your network: Go to your phone's network settings and choose to manually select your network provider, rather than having it set to automatic.  ",
+         "Update software and carrier settings: Check for and install any available software updates for your device and update your carrier settings. ",
+         
+           "Reset network settings: Resetting your network settings can fix issues caused by incorrect network configurations, though it will remove saved Wi-Fi passwords. ",
+            
+        ],
+
+      tips: [
+        "Contact support: If the problem continues after trying all the steps, contact support from a working phone for further assistance. ",
+        "Visit a professional: If the issue persists, there might be a hardware problem with your device's antenna or radio chip, and you may need to take it to a professional repair service. ",
+      ],
+    },
+
+
+     "data-problems": {
+      title: "Mobile data problems",
+      steps: [
+        "Ensure Mobile Data is On: Go to your phone's settings (e.g., Settings > Network & internet > Mobile data) to confirm it's enabled. ",
+        "Reset network settings: This will reset your Wi-Fi, Bluetooth, and mobile data settings to their defaults and can resolve persistent connection problems. ",
+        "Check APN Settings: If mobile data is still not working, reset your Access Point Name (APN), as incorrect APN settings can prevent data from working. ",
+       
+         
+          
+        ],
+
+      tips: [
+        "Restart your phone: A simple restart can resolve temporary glitches affecting your network connection. ",
+        // "Record the transaction in the system for tracking",
+      ],
+    },
+
+
+
   };
 
   const handleCategoryChange = (e) => {
