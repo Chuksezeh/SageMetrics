@@ -8,17 +8,17 @@ const LearnHowTo = () => {
   const [selectedTopic, setSelectedTopic] = useState("");
   const [currentStep, setCurrentStep] = useState(1); // 1: Category, 2: Topic, 3: Review
 
-
   const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!userdata) {
-        navigate("/");
+      navigate("/");
     }
-}, [userdata]);
+  }, [userdata]);
 
-  // Sample data
+  
+
   const categories = [
     { id: "sim", name: "SIM Management" },
     { id: "device", name: "Device Setup" },
@@ -30,7 +30,7 @@ const navigate = useNavigate();
   const topics = {
     sim: [
       { id: "vend-sim", name: "How to vend a SIM card" },
-       { id: "sell-sim", name: "How to sell a SIM card" },
+      { id: "sell-sim", name: "How to sell a SIM card" },
       { id: "activate-sim", name: "How to activate a SIM card" },
       { id: "replace-sim", name: "How to replace a SIM card/welcome pack" },
       { id: "number-porting", name: "How to port a number" },
@@ -75,21 +75,20 @@ const navigate = useNavigate();
       steps: [
         "Log into vitel wireless partner app",
         "Click on sell sim",
-         
-          "Select sim type",
-          "Select category",
-           "Select serial number",
-           "Select MSISDN",
-           "Click on purchase",
-           "Top up airtime 'optional'",
-           "Top up data 'optional'",
-           "Click on proceed to make payment",
-           "On success, proceed to sim activation",
-           
+
+        "Select sim type",
+        "Select category",
+        "Select serial number",
+        "Select MSISDN",
+        "Click on purchase",
+        "Top up airtime 'optional'",
+        "Top up data 'optional'",
+        "Click on proceed to make payment",
+        "On success, proceed to sim activation",
       ],
       tips: [
-         "Take note of the customer code on the receipt",
-         "The customer code will be used for sim activation",
+        "Take note of the customer code on the receipt",
+        "The customer code will be used for sim activation",
         "Keep SIM cards secure when not in use",
         "Record the transaction in the system for tracking",
       ],
@@ -101,50 +100,43 @@ const navigate = useNavigate();
         "Click on the icon on the left top corner of your screen",
         "Click on New Verification",
         "Enter your NIN number for authentication",
-         "Enter your NIN number for authentication",
-         "Position your head on the circle to take a shut",
-         "Start capture, if turned green, capture image ",
-         "Submit for NIN verification ",
-         "On success proceed to sim activation ",
-         
-         
-           
+        "Enter your NIN number for authentication",
+        "Position your head on the circle to take a shut",
+        "Start capture, if turned green, capture image ",
+        "Submit for NIN verification ",
+        "On success proceed to sim activation ",
       ],
       tips: [
         "Keep SIM cards secure when not in use",
         "Record the transaction in the system for tracking",
       ],
     },
-     "replace-sim": {
+    "replace-sim": {
       title: "How to replace a SIM card/welcome pack",
       steps: [
         "Log into vitel wireless partner app",
         "Click on the icon on the left top corner of your screen",
         "Click on Welcome Pack",
         "Click on Add New",
-         "Fill the form ",
-         "Capture customer image, for NIN verification",
-          "On success select sim type",
-          "Select category",
-          "Select serial number ",
-           "Click on purchase",
-           "Top up airtime 'optional'",
-           "Top up data 'optional'",
-           "Click on proceed to make payment",
-           "On success click on eye icon ",
-           "Click on Process to begin processing of your welcome pack",
-            "Once done, the status will change to 'Completed' "
-
-
-       
-],
+        "Fill the form ",
+        "Capture customer image, for NIN verification",
+        "On success select sim type",
+        "Select category",
+        "Select serial number ",
+        "Click on purchase",
+        "Top up airtime 'optional'",
+        "Top up data 'optional'",
+        "Click on proceed to make payment",
+        "On success click on eye icon ",
+        "Click on Process to begin processing of your welcome pack",
+        "Once done, the status will change to 'Completed' ",
+      ],
       tips: [
         "Keep SIM cards secure when not in use",
         "Record the transaction in the system for tracking",
       ],
     },
-     
-    
+
     "number-porting": {
       title: "How to port a number",
       steps: [
@@ -152,18 +144,18 @@ const navigate = useNavigate();
         "Click on the icon on the left top corner of your screen",
         "Click on Number Porting",
         "Click on Add New",
-         "Fill the form ",
-         "Wait for approval, if approved",
-          // "Select category",
-          // "Select serial number ",
-          //  "Click on purchase",
-          //  "Top up airtime 'optional'",
-          //  "Top up data 'optional'",
-          //  "Click on proceed to make payment",
-          //  "On success click on eye icon ",
-           "Click on Process to begin processing of your welcome pack",
-            "Once done, the status will change to 'Completed' "
-        ],
+        "Fill the form ",
+        "Wait for approval, if approved",
+        // "Select category",
+        // "Select serial number ",
+        //  "Click on purchase",
+        //  "Top up airtime 'optional'",
+        //  "Top up data 'optional'",
+        //  "Click on proceed to make payment",
+        //  "On success click on eye icon ",
+        "Click on Process to begin processing of your welcome pack",
+        "Once done, the status will change to 'Completed' ",
+      ],
 
       tips: [
         "Keep SIM cards secure when not in use",
@@ -171,28 +163,26 @@ const navigate = useNavigate();
       ],
     },
 
-     "setup-phone": {
+    "setup-phone": {
       title: "How to set up a new phone",
-        
+
       steps: [
         "Locate the SIM tray, usually on the side of the phone, using a SIM ejector tool or paperclip to open the small hole. ",
         "Place the SIM card onto the tray, matching the cut corner to the tray's outline. ",
         "Gently reinsert the SIM tray into the phone until it snaps into place. ",
         "The phone will automatically detect the new SIM card. ",
-        
-        ],
+      ],
 
       tips: [
         "If you have issues with SIM recognition, ensure it's inserted correctly and restart your phone. ",
         "If activation fails, contact customer support.",
-        "You may need to update your phone's software to support the SIM card. "
-        ,
+        "You may need to update your phone's software to support the SIM card. ",
       ],
     },
 
-     "troubleshoot-device": {
+    "troubleshoot-device": {
       title: "Device troubleshooting",
-        
+
       steps: [
         "Check the SIM card's placement: Ensure the SIM is correctly seated in the SIM tray and properly aligned with the phone's SIM slot.  ",
         "Remove and reinsert the SIM: Take the SIM card out and reinsert it into the tray.  ",
@@ -200,57 +190,48 @@ const navigate = useNavigate();
         "Clean the SIM contacts: Gently wipe the gold contact points on the SIM card with a soft, dry cloth or cotton swab.  ",
         "Toggle Airplane Mode: Turn airplane mode on for a few seconds, then turn it off to reset network connections. ",
         "Restart your phone: A simple restart can resolve temporary glitches and prompt the device to detect the new SIM. ",
-        "Test the SIM in another device: Try the SIM card in a different phone to determine if the issue is with the SIM itself or your device. "
-        
-        ],
+        "Test the SIM in another device: Try the SIM card in a different phone to determine if the issue is with the SIM itself or your device. ",
+      ],
 
       tips: [
         "Check for phone updates: Outdated device software can cause compatibility problems; ensure your phone's operating system is up-to-date. ",
-       
+
         ,
       ],
     },
 
-"payment-options": {
+    "payment-options": {
       title: "Payment options",
       steps: [
         "Sim Purchase = Card, Wallet, Bank Transfer, USSD",
         "Airtime Top-up = Card, Wallet, Bank Transfer, USSD",
         "Data Top-up = Card, Wallet, Bank Transfer, USSD, Airtime Balance",
-         "X-phone Top-up = Card, Wallet, Bank Transfer, USSD, Airtime Balance",
-         "Wallet Top-up = Card, Bank Transfer, USSD ",
-         "Device Purchase = Card, Bank Transfer,USSD, Pay on Delivery",
-         "IOT = Card, Bank Transfer, USSD",
-         "VAS = Card, Bank Transfer, USSD",
-
-
-         
-
-
-       
-],
+        "X-phone Top-up = Card, Wallet, Bank Transfer, USSD, Airtime Balance",
+        "Wallet Top-up = Card, Bank Transfer, USSD ",
+        "Device Purchase = Card, Bank Transfer,USSD, Pay on Delivery",
+        "IOT = Card, Bank Transfer, USSD",
+        "VAS = Card, Bank Transfer, USSD",
+      ],
       tips: [
-
-       "Buy Airtime → Select amount → Choose “Pay with Wallet” or “Pay with Card”.",
-       "Buy Data → Select amount → Choose “Pay with Wallet”, “Pay with Card” or “Pay with Airtime Balance”.",
-       "Top-up Wallet → Choose “Bank Transfer (Virtual Account)” or Card.",
-       "Buy Device → Choose “Pay with Card”, “Pay on Delivery”.",
+        "Buy Airtime → Select amount → Choose “Pay with Wallet” or “Pay with Card”.",
+        "Buy Data → Select amount → Choose “Pay with Wallet”, “Pay with Card” or “Pay with Airtime Balance”.",
+        "Top-up Wallet → Choose “Bank Transfer (Virtual Account)” or Card.",
+        "Buy Device → Choose “Pay with Card”, “Pay on Delivery”.",
       ],
     },
 
-     "signal-issues": {
+    "signal-issues": {
       title: "Fixing signal issues",
       steps: [
         "Check for coverage: Move to a different location, preferably outdoors, to see if signal strength improves. ",
         "Restart your phone: A simple reboot can often resolve temporary software glitches affecting your network connection. ",
         "Toggle Airplane Mode: Turn Airplane Mode on for a few seconds, then turn it off to force your device to find the best available signal. ",
         "Remove accessories: Take off any phone cases or accessories, as some can interfere with your phone's antenna. ",
-         "Manually select your network: Go to your phone's network settings and choose to manually select your network provider, rather than having it set to automatic.  ",
-         "Update software and carrier settings: Check for and install any available software updates for your device and update your carrier settings. ",
-         
-           "Reset network settings: Resetting your network settings can fix issues caused by incorrect network configurations, though it will remove saved Wi-Fi passwords. ",
-            
-        ],
+        "Manually select your network: Go to your phone's network settings and choose to manually select your network provider, rather than having it set to automatic.  ",
+        "Update software and carrier settings: Check for and install any available software updates for your device and update your carrier settings. ",
+
+        "Reset network settings: Resetting your network settings can fix issues caused by incorrect network configurations, though it will remove saved Wi-Fi passwords. ",
+      ],
 
       tips: [
         "Contact support: If the problem continues after trying all the steps, contact support from a working phone for further assistance. ",
@@ -258,26 +239,19 @@ const navigate = useNavigate();
       ],
     },
 
-
-     "data-problems": {
+    "data-problems": {
       title: "Mobile data problems",
       steps: [
         "Ensure Mobile Data is On: Go to your phone's settings (e.g., Settings > Network & internet > Mobile data) to confirm it's enabled. ",
         "Reset network settings: This will reset your Wi-Fi, Bluetooth, and mobile data settings to their defaults and can resolve persistent connection problems. ",
         "Check APN Settings: If mobile data is still not working, reset your Access Point Name (APN), as incorrect APN settings can prevent data from working. ",
-       
-         
-          
-        ],
+      ],
 
       tips: [
         "Restart your phone: A simple restart can resolve temporary glitches affecting your network connection. ",
         // "Record the transaction in the system for tracking",
       ],
     },
-
-
-
   };
 
   const handleCategoryChange = (e) => {
@@ -299,8 +273,6 @@ const navigate = useNavigate();
     setCurrentStep(1);
   };
 
- 
-
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -308,38 +280,21 @@ const navigate = useNavigate();
           <div className="step-content">
             <h2>Select a Category</h2>
             <p>Choose the category that best matches what you need help with</p>
-            {/* <div className="category-grid">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className={`category-card ${
-                    selectedCategory === category.id ? "selected" : ""
-                  }`}
-                  onClick={() => setSelectedCategory(category.id)}
-                >
-                 
-                  <h3>{category.name}</h3>
-                </div> */}
 
-              <div className="topics-list">
+            <div className="topics-list">
               {categories.map((category) => (
                 <div
                   key={category.id}
                   className={`topic-item ${
                     selectedCategory === category.id ? "selected" : ""
                   }`}
-                   onClick={() => setSelectedCategory(category.id)}
+                  onClick={() => setSelectedCategory(category.id)}
                 >
                   <span className="topic-bullet">•</span>
                   <span className="topic-name">{category.name}</span>
                 </div>
               ))}
             </div>
-
-
-
-              {/* ))}
-            </div> */}
           </div>
         );
 
@@ -357,80 +312,13 @@ const navigate = useNavigate();
                   }`}
                   onClick={() => setSelectedTopic(topic.id)}
                 >
-                 
                   <span className="topic-bullet">•</span>
                   <span className="topic-name">{topic.name} </span>
-                   
-                  {/* <div>   <MdOutlineKeyboardArrowRight /></div> */}
-                     
-                
-                  
                 </div>
               ))}
             </div>
           </div>
         );
-
-//     case 2:
-//   return (
-//     <div className="step-content">
-//       <h2>Select a Topic</h2>
-//       <p>Choose the specific topic you need assistance with</p>
-      
-//       <div className="topics-table-container">
-//         <table className="topics-table">
-//           <thead>
-//             <tr>
-//               <th className="table-header">Topic Name</th>
-//               <th className="table-header">Category</th>
-//               <th className="table-header">Last Updated</th>
-//               <th className="table-header">Difficulty</th>
-//               <th className="table-header actions-header">Select</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {topics[selectedCategory]?.map((topic) => (
-//               <tr 
-//                 key={topic.id} 
-//                 className={`topic-row ${selectedTopic === topic.id ? 'selected' : ''}`}
-//                 onClick={() => setSelectedTopic(topic.id)}
-//               >
-//                 <td className="topic-name-cell">
-//                   <div className="topic-name-content">
-//                     <span className="topic-icon">📄</span>
-//                     <span className="topic-name">{topic.name}</span>
-//                   </div>
-//                 </td>
-//                 <td className="topic-category">
-//                   <span className="category-badge">
-//                     {categories.find(c => c.id === selectedCategory)?.name}
-//                   </span>
-//                 </td>
-//                 <td className="topic-updated">2 days ago</td>
-//                 <td className="topic-difficulty">
-//                   <span className="difficulty-badge easy">Easy</span>
-//                 </td>
-//                 <td className="topic-actions">
-//                   <button 
-//                     className={`select-button ${selectedTopic === topic.id ? 'selected' : ''}`}
-//                     onClick={() => setSelectedTopic(topic.id)}
-//                   >
-//                     {selectedTopic === topic.id ? 'Selected' : 'Select'}
-//                   </button>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-      
-//       {topics[selectedCategory]?.length === 0 && (
-//         <div className="no-topics-message">
-//           <p>No topics available for this category.</p>
-//         </div>
-//       )}
-//     </div>
-//   );
 
       case 3:
         const guide = guideContent[selectedTopic];
@@ -462,7 +350,13 @@ const navigate = useNavigate();
                   If you're still having trouble, contact our support team for
                   assistance.
                 </p>
-               <a href="https://www.vitelwireless.com/vitel-wireless-support"  target="_blank"> <button className="support-button" >Contact Support</button></a> 
+                <a
+                  href="https://www.vitelwireless.com/vitel-wireless-support"
+                  target="_blank"
+                >
+                  {" "}
+                  <button className="support-button">Contact Support</button>
+                </a>
               </div>
             </div>
           </div>
@@ -472,17 +366,6 @@ const navigate = useNavigate();
         return null;
     }
   };
-
-//   const getCategoryIcon = (categoryId) => {
-//     const icons = {
-//       sim: "📱",
-//       device: "📟",
-//       billing: "💰",
-//       network: "📶",
-//       account: "👤",
-//     };
-//     return icons[categoryId] || "❓";
-//   };
 
   return (
     <div className="learn-how-to-container">
@@ -508,26 +391,6 @@ const navigate = useNavigate();
           <span className="step-label">Review</span>
         </div>
       </div>
-
-      <div className="selection-display">
-        {selectedCategory && (
-          <span className="selection-pill">
-            Category: {categories.find((c) => c.id === selectedCategory)?.name}
-          </span>
-        )}
-        {selectedTopic && (
-          <span className="selection-pill">
-            Topic:{" "}
-            {
-              topics[selectedCategory]?.find((t) => t.id === selectedTopic)
-                ?.name
-            }
-          </span>
-        )}
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content">{renderStep()}</div>
 
       {/* Navigation */}
       <div className="navigation-controls">
@@ -557,6 +420,26 @@ const navigate = useNavigate();
           </button>
         </div>
       </div>
+
+      <div className="selection-display">
+        {selectedCategory && (
+          <span className="selection-pill">
+            Category: {categories.find((c) => c.id === selectedCategory)?.name}
+          </span>
+        )}
+        {selectedTopic && (
+          <span className="selection-pill">
+            Topic:{" "}
+            {
+              topics[selectedCategory]?.find((t) => t.id === selectedTopic)
+                ?.name
+            }
+          </span>
+        )}
+      </div>
+
+      {/* Main Content */}
+      <div className="main-content">{renderStep()}</div>
     </div>
   );
 };
