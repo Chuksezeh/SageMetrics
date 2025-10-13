@@ -124,9 +124,9 @@ const FAQDetails = () => {
       </div>
 
       <div className="back-to-faq">
-        <Link to="/admin-dashboard/trending-faq" className="back-link">
+        {/* <Link to="/admin-dashboard/trending-faq" className="back-link">
           ← Back to Trending FAQ
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
