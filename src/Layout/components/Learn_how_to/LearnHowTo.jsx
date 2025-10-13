@@ -6,7 +6,8 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 const LearnHowTo = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
-  const [currentStep, setCurrentStep] = useState(1); // 1: Category, 2: Topic, 3: Review
+  const [currentStep, setCurrentStep] = useState(1); 
+  // 1: Category, 2: Topic, 3: Review
 
 
   const userdata = JSON.parse(localStorage.getItem("SageData" || "{}"));
@@ -16,21 +17,21 @@ const navigate = useNavigate();
     if (!userdata) {
         navigate("/");
     }
-}, [userdata]);
+}, [userdata]); 
 
   // Sample data
   const categories = [
     { id: "sim", name: "SIM Management" },
     { id: "device", name: "Device Setup" },
-    { id: "billing", name: "Billing & Payments" },
+    { id: "billing", name: "Billing & Payments" },   
     { id: "network", name: "Network Issues" },
     { id: "account", name: "Account Management" },
   ];
 
-  const topics = {
+  const topics = {  
     sim: [
-      { id: "vend-sim", name: "How to vend a SIM card" },
-       { id: "sell-sim", name: "How to sell a SIM card" },
+      { id: "vend-sim", name: "How  to vend a SIM card" },
+       { id: "sell-sim",   name: "How to sell a SIM card" },
       { id: "activate-sim", name: "How to activate a SIM card" },
       { id: "replace-sim", name: "How to replace a SIM card/welcome pack" },
       { id: "number-porting", name: "How to port a number" },

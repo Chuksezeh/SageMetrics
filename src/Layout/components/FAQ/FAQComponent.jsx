@@ -49,30 +49,7 @@ const FAQComponent = () => {
       shortContent: 'To sell vitel wireless sim as a partner, you need to download and install a the required applications: Vitel Partner App, Vitel Agent App and Vitel KYC App.',
       hasMedia: true
     },
-    // {
-    //   id: 4,
-    //   question: 'My device won\'t turn on, what should I do?',
-    //   topic: 'Hardware',
-    //   date: '2023-10-05',
-    //   content: 'First, check that your device is properly connected to a power source. Try a different power outlet or cable. If the issue persists, it may indicate a hardware problem requiring professional assistance.',
-    //   hasMedia: true
-    // },
-    // {
-    //   id: 5,
-    //   question: 'How to improve my internet connection stability?',
-    //   topic: 'Network',
-    //   date: '2023-10-01',
-    //   content: 'For better connection stability: 1. Position your router centrally 2. Reduce interference from other devices 3. Use a wired connection when possible 4. Update your router firmware 5. Contact your ISP if issues continue.',
-    //   hasMedia: false
-    // },
-    // {
-    //   id: 6,
-    //   question: 'How do I change my subscription plan?',
-    //   topic: 'Billing',
-    //   date: '2023-09-28',
-    //   content: 'You can change your subscription plan at any time by visiting the Billing section of your account dashboard. Select the plan you want and confirm the changes. The new rate will apply from your next billing cycle.',
-    //   hasMedia: false
-    // }
+    
   ];
 
   const filteredFAQs = activeTopic === 'All' ? data?.data : data?.data.filter(faq => faq.id == activeTopic);
@@ -116,8 +93,9 @@ const FAQComponent = () => {
             <p>No  FAQ found.</p>
           </div>}
 
-        {
-          isPending ? <div className="loader-div-Ticket"> <span className="loader"></span> </div> : null
+        { 
+          isPending ? <div className="loader-div-Ticket"> 
+          <span className="loader"></span> </div> : null
         }
 
         {filteredFAQs?.map(faq => (
@@ -129,13 +107,14 @@ const FAQComponent = () => {
               <span className="indicator">
                 {expandedQuestion === faq.id ? '−' : '+'}
               </span>
-            </div>
+            </div>  
 
             {expandedQuestion === faq.id && (
               <div className="faq-answer">
                 <div className="faq-meta">
                   <span className="topic-badge">{faq.title}</span>
-                  <span className="date">Updated: {moment(faq.createdAt).format("lll")}</span>
+                  <span className="date">
+                Updated: {moment(faq.createdAt).format("lll")}</span>
                 </div>
                 <p>{faq.shortDescription}</p>
                 {faq.imageUrl || faq.videoUrl ? (
@@ -143,7 +122,7 @@ const FAQComponent = () => {
                     {/* <span className="media-icon">🖼️</span> */}
                     This article contains helpful graphics and videos
                   </div>
-                ) : (null)
+                   ) : (null)
                 }
                 <Link
                   to={{
