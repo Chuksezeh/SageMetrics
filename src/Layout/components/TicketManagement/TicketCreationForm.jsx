@@ -36,12 +36,15 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
       .min(10, "Description must be at least 10 characters")
       .max(250, "Description must not exceed 250 characters"),
     priority: Yup.string().required("Priority is required"),
+    userType: Yup.string().required("user type is required"),
   });
 
   // Formik setup
   const formik = useFormik({
     initialValues: {
       subscriber: "",
+      agentNumber: "",
+      userType: "Subscriber",
       category: "",
       type: "",
       createdBy: `${userdata?.firstName} ${userdata?.lastName}`,
@@ -134,33 +137,24 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
   };
 
   // Categories and issue types
-  const categories = ["Network", "Billing", "Technical", "Account", "General"];
+  const categories = ["Network", "Billing/Recharge", "Technical", "General"];
   const issueTypes = {
     Network: [
-      "Slow Speed",
-      "No Connection",
-      "Intermittent Connection",
-      "Router Issues",
+      "No Signal",
+      "No Internet",
+      "Stopped working",
+      "Never worked",
+      "Others",
     ],
     Billing: [
-      "Overcharge",
-      "Payment Issue",
-      "Invoice Problem",
-      "Refund Request",
+      "No wallet credit received",
+      "Airtime Topup failed",
+      "Data Topup Failed",
+      "Wrong Amount C/D",
     ],
-    Technical: [
-      "Hardware Issue",
-      "Software Problem",
-      "Configuration",
-      "Performance",
-    ],
-    Account: [
-      "Login Issues",
-      "Profile Update",
-      "Security Concern",
-      "Account Recovery",
-    ],
-    General: ["Information Request", "Complaint", "Suggestion", "Other"],
+    Technical: ["Command", "iPartner", "Xphone", "Others"],
+
+    General: ["Others"],
   };
 
   return (
@@ -190,6 +184,50 @@ const TicketCreationForm = ({ isOpen, onClose, onSubmit }) => {
               />
               {formik.touched.subscriber && formik.errors.subscriber && (
                 <div className="error-message">{formik.errors.subscriber}</div>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="userType" className="form-label">
+                Type *
+              </label>
+              <select
+                id="userType"
+                name="userType"
+                className={`form-select ${
+                  formik.touched.userType && formik.errors.userType
+                    ? "error"
+                    : ""
+                }`}
+                {...formik.getFieldProps("userType")}
+              >
+                <option value="Subscriber">Subscriber</option>
+                <option value="Agent">Agent</option>
+                <option value="Others">Others </option>
+              </select>
+              {formik.touched.userType && formik.errors.userType && (
+                <div className="error-message">{formik.errors.userType}</div>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="agentNumber" className="form-label">
+                Agent Number
+              </label>
+              <input
+                id="agentNumber"
+                name="agentNumber"
+                type="text"
+                placeholder="e.g., 234712"
+                className={`form-input ${
+                  formik.touched.agentNumber && formik.errors.agentNumber
+                    ? "error"
+                    : ""
+                }`}
+                {...formik.getFieldProps("agentNumber")}
+              />
+              {formik.touched.agentNumber && formik.errors.agentNumber && (
+                <div className="error-message">{formik.errors.agentNumber}</div>
               )}
             </div>
 

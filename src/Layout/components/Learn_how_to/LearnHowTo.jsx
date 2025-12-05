@@ -110,6 +110,39 @@ const LearnHowTo = () => {
     setTopicDetails(null);
   };
 
+  const additionalImages = [
+    {
+      url: "https://i.pinimg.com/736x/2d/95/e5/2d95e5886fc4c65a6778b5fee94a7d59.jpg",
+      alt: "Different types of SIM cards",
+      caption: "Various SIM card sizes: Standard, Micro, and Nano",
+    },
+    {
+      url: "https://i.pinimg.com/736x/2d/95/e5/2d95e5886fc4c65a6778b5fee94a7d59.jpg",
+      alt: "Vendor system login screen",
+      caption: "Login to the vendor system with your credentials",
+    },
+    {
+      url: "https://media.istockphoto.com/id/537692968/photo/capturing-the-beauty-of-nature.jpg?s=612x612&w=0&k=20&c=V1HaryvwaOZfq80tAzeVPJST9iPoGnWb8ICmE-lmXJA=",
+      alt: "Scanning SIM card barcode",
+      caption: "Scan the SIM card barcode to register it in the system",
+    },
+    {
+      url: "https://images.pexels.com/photos/89915/pexels-photo-89915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      alt: "SIM activation screen",
+      caption: "Activate the SIM card through the system interface",
+    },
+    {
+      url: "https://images.pexels.com/photos/89915/pexels-photo-89915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      alt: "Handing SIM card to customer",
+      caption: "Provide the SIM card to customer with instructions",
+    },
+    {
+      url: "https://images.pexels.com/photos/89915/pexels-photo-89915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      alt: "Secure SIM card storage",
+      caption: "Keep SIM cards secure when not in use",
+    },
+  ];
+
   // Loader component
   const Loader = ({ type = "default" }) => (
     <div className="loader-spinner"></div>
@@ -186,11 +219,36 @@ const LearnHowTo = () => {
               <>
                 <h2>{topicDetails?.topicName}</h2>
                 <div className="guide-content">
-                  {/* Use dangerouslySetInnerHTML to render the HTML content */}
+                  <div className="featured-media">
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQykzoZeCE0p7LeuyHnLYCdPP2jju9d5PaMeA&s"
+                      alt={topicDetails?.topicName}
+                      className="featured-image"
+                    />
+                  </div>
+
                   <div
                     dangerouslySetInnerHTML={{ __html: topicDetails?.content }}
                     className="topic-content"
                   />
+
+                  <div className="image-gallery">
+                    <h3>Follow the images below to complete the task</h3>
+                    <div className="gallery-grid">
+                      {additionalImages?.map((image, index) => (
+                        <div key={index} className="gallery-item">
+                          <img
+                            src={image.url}
+                            alt={image.alt || `Step ${index + 1}`}
+                            className="gallery-image"
+                          />
+                          {image.caption && (
+                            <p className="image-caption">{image.caption}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   <div className="additional-help">
                     <h3>Need more help?</h3>
@@ -207,6 +265,21 @@ const LearnHowTo = () => {
                         Contact Support
                       </button>
                     </a>
+                  </div>
+
+                  <div className="video-container">
+                    <div className="youtube-embed">
+                      <iframe
+                        src="https://www.youtube.com/embed/aTQPbdiVrv4"
+                        title="How to vend a SIM card - Tutorial"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                    <p className="video-caption">
+                      Watch this tutorial to learn how {topicDetails?.topicName}
+                    </p>
                   </div>
                 </div>
               </>
